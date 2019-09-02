@@ -1,4 +1,4 @@
-# Reviro (Placeholder software name) - PHP-SRePS 
+# (Placeholder software name here) - PHP-SRePS 
 **Developers:**
 * Adam Williams (101670608)
 * Parth Madhani (101901858)
@@ -9,5 +9,11 @@
  
  Front End Main File: PHP-SRePS/MainWindow.xaml
  Main C# File: PHP-SRePS/MainWindow.xaml.cs
+ 
+ **Files:** Document New Files and Classes here..
+ 
+ MainWindow.xaml: Front-end xaml for main window.
+ MainWindow.xaml.cs: Main C# Logic file for main window functionality.
+
  
 
