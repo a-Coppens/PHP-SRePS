@@ -12,7 +12,7 @@
  
  **Files:** Document New Files and Classes here..
  
- MainWindow.xaml: Front-end xaml for main window.
+ MainWindow.xaml: Front-end xaml for main window.  
  MainWindow.xaml.cs: Main C# Logic file for main window functionality.
 
  
