@@ -39,5 +39,7 @@
         <!-- specify the elements position in the window -->
         <TextBlock Grid.Column="1" Grid.Row="1" Text="Reviro" 
                    FontFamily="Segoe UI Light" FontSize="36"></TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="2" Text="Teviro" 
+                   FontFamily="Segoe UI Light" FontSize="36"></TextBlock>
     </Grid>
 </Window>
