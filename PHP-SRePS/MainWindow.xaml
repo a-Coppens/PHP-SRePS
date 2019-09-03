@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PHP_SRePS"
         mc:Ignorable="d" FontSize="16" FontFamily="Segoe UI Light"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Reviro" Height="450" Width="800"
+        Name="PHPSRePs" Icon="Images/Reviro.ico">
     <Grid>
         <!-- Specify a number of columns to place elements in-->
         <!-- add more or delete these as needed -->
