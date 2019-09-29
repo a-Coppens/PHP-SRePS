@@ -20,8 +20,9 @@ namespace PHP_SRePS
     /// </summary>
     public partial class MainWindow : Window
     {
-        DataGrid dg;
-        private List<InventoryItem> _inventoryItems = new List<InventoryItem>();
+        DataGrid _dg;
+        private readonly List<InventoryItem> _inventoryItems = new List<InventoryItem>();
+        private int _id = 1;
 
         public MainWindow()
         {
@@ -29,21 +30,8 @@ namespace PHP_SRePS
 
             OutputText.Text = "";
 
-            dg = new DataGrid();
-            MainGrid.Children.Add(dg);
-            Grid.SetRow(dg, 4);
-            Grid.SetColumn(dg, 3);
-            dg.Height = 250;
-
-            for (int i = 1; i <= 4; ++i)
-            {
-                var column = new DataGridTextColumn
-                {
-                    Header = "Column" + i,
-                    Binding = new Binding("Column" + i)
-                };
-                dg.Columns.Add(column);
-            }
+            _dg = new DataGrid();
+            InitDataGrid(_dg);
 
             /*
             int[] scores = new int[] { 50, 75, 125, 25, 10, 7 };
@@ -55,24 +43,48 @@ namespace PHP_SRePS
 
             foreach (int i in scoreQuery)
                 OutputText.Text += i + " ";
-                */
+            */
         }
 
-        readonly List<string> inputs = new List<string>();
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string input = inputTextBox.Text;
-            inputs.Add(input);
-            InventoryItem newInvItem = new InventoryItem { ID = "M0023", Name = "ProductExample1 20x capsules", QuantityCurrent = 12 };
-            inputTextBox.Clear();
+            InventoryItem newInvItem = new InventoryItem { ID = "M" + _id, Name = inputTextBoxName.Text, QuantityCurrent = int.Parse(inputTextBoxQuantity.Text) };
+            inputTextBoxName.Clear();
+            inputTextBoxQuantity.Clear();
+            _id++;
 
             _inventoryItems.Add(newInvItem);
+            _dg.Items.Add(newInvItem);
+        }
 
-            var t = from invItem in _inventoryItems
-                    select invItem.Name;
+        void InitDataGrid(DataGrid dg)
+        {
+            MainGrid.Children.Add(dg);
+            Grid.SetRow(dg, 4);
+            Grid.SetColumn(dg, 3);
+            dg.Height = 250;
 
-            //dg.CurrentCell
-            dg.Items.Add("www");
+            DataGridTextColumn textColumnID = new DataGridTextColumn
+            {
+                Header = "ID",
+                Binding = new Binding("ID")
+            };
+
+            DataGridTextColumn textColumnName = new DataGridTextColumn
+            {
+                Header = "Name",
+                Binding = new Binding("Name")
+            };
+
+            DataGridTextColumn textColumnQuantity = new DataGridTextColumn
+            {
+                Header = "Quantity",
+                Binding = new Binding("QuantityCurrent")
+            };
+
+            dg.Columns.Add(textColumnID);
+            dg.Columns.Add(textColumnName);
+            dg.Columns.Add(textColumnQuantity);
         }
     }
 }
