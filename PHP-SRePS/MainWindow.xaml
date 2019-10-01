@@ -13,11 +13,11 @@
         <!-- auto = fits to size of element we place-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="auto" MinWidth="367.2" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition />
             <ColumnDefinition Width="20" />
         </Grid.ColumnDefinitions>
 
@@ -37,37 +37,15 @@
         <!-- More options to edit in the properties tab when -->
         <!-- you click in the element tags Grid.Column and Grid.Row-->
         <!-- specify the elements position in the window -->
-        <TextBlock Grid.Column="1" Grid.Row="1" Text="Reviro" 
-                   FontFamily="Segoe UI Light" FontSize="36"></TextBlock>
-        <TextBlock x:Name="OutputText" Grid.Column="1" Grid.Row="2" Text="Teviro" 
-                   FontFamily="Segoe UI Light" FontSize="36"></TextBlock>
-        <TextBox x:Name="inputTextBoxName" Grid.Column="5"   HorizontalAlignment="Left" Height="23" Margin="114,12,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120">
-            <TextBox.Style>
-                <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
-                    <Style.Resources>
-                        <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
-                            <VisualBrush.Visual>
-                                <Label Content="Item Name" Foreground="Gray" />
-                            </VisualBrush.Visual>
-                        </VisualBrush>
-                    </Style.Resources>
-                    <Style.Triggers>
-                        <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
-                            <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
-                        </Trigger>
-                        <Trigger Property="Text" Value="{x:Null}">
-                            <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
-                        </Trigger>
-                        <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter Property="Background" Value="White" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBox.Style>
-        </TextBox>
-        <Button Content="Add" Grid.Column="5" HorizontalAlignment="Left" Margin="391,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <TextBlock Grid.Column="1" Grid.Row="1" Text="People Health Pharmacy" 
+                   FontFamily="Segoe UI Light" FontSize="36" Margin="0,0,0.2,0"></TextBlock>
+        <TextBlock x:Name="OutputText" Grid.Column="1" Grid.Row="2" 
+                   FontFamily="Segoe UI Light" FontSize="36" Margin="0,0,0.2,0"><InlineUIContainer>
+                <TextBlock TextWrapping="Wrap"/>
+            </InlineUIContainer></TextBlock>
+        <Button x:Name="additem" Content="Add New Item" Grid.Column="5" HorizontalAlignment="Left" Margin="232.8,12,0,0" Grid.Row="1" VerticalAlignment="Top" Width="154" Click="Button_Click" Height="26" Grid.ColumnSpan="2"/>
         <!-- TODO: Make inputTextBoxQuantity allow number entry only -->
-        <TextBox x:Name="inputTextBoxQuantity" Grid.Column="5" HorizontalAlignment="Left" Height="23" Margin="252,12,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120">
+        <TextBox x:Name="qtextbox" Grid.Column="1" HorizontalAlignment="Left" Height="27" Margin="185,15,0,0" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Top" Width="109" AutomationProperties.HelpText="Quantity" AutomationProperties.IsRequiredForForm="True">
             <TextBox.Style>
                 <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
                     <Style.Resources>
@@ -91,5 +69,8 @@
                 </Style>
             </TextBox.Style>
         </TextBox>
+        <Button x:Name="edititem" Content="Edit Existing Item" Grid.Column="5" HorizontalAlignment="Left" Margin="232.8,10,0,0" Grid.Row="2" VerticalAlignment="Top" Width="154" Click="Button_Click" Height="26" Grid.ColumnSpan="2"/>
+        <Button x:Name="salesadditem" Content="Add" Grid.Column="1" HorizontalAlignment="Left" Margin="304,15,0,0" Grid.Row="2" VerticalAlignment="Top" Width="53" Click="Button_Click" Height="26"/>
+        <ComboBox x:Name="itemnamebox" Grid.Column="1" HorizontalAlignment="Left" Margin="10,15,0,0" ItemsSource="{Binding}" Grid.Row="2" VerticalAlignment="Top" Width="170"/>
     </Grid>
 </Window>
