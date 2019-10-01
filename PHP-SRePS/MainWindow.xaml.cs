@@ -34,23 +34,41 @@ namespace PHP_SRePS
 
             _dg = new DataGrid();
             InitDataGrid(_dg);
-            
-            SqlConnection sc = new SqlConnection("Data Source=php-sreps.database.windows.net;Database=php-sreps;User Id=swinAdmin;Password=__admin12;");
-                       
-           
-            SqlCommand com = new SqlCommand();
-            com.Connection = sc;
-            sc.Open();
-            com.CommandText = ("select productName from Products");
-            SqlDataReader read = com.ExecuteReader(); 
-               
-            foreach (var item in read)
-            {
-                itemnamebox.Items.Add(item);
-            }
-            sc.Close();
 
-           
+            try
+            {
+                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+                builder.DataSource = "php-sreps.database.windows.net";
+                builder.UserID = "swinAdmin";
+                builder.Password = "__admin12";
+                builder.InitialCatalog = "php-sreps";
+
+                using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
+                {
+                    
+                    connection.Open();
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("select * from Products; ");
+                    String sql = sb.ToString();
+                    int i = 0;
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                itemnamebox.Items.Add(reader["productName"].ToString());
+                                i+=1;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+
             
 
             /*
@@ -66,11 +84,26 @@ namespace PHP_SRePS
             */
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void isbuttonEnabled()
+        {
+            if ((qtextbox.Text != String.Empty) && (itemnamebox.Text != String.Empty))
+            {
+                salesadditem.IsEnabled = true;
+
+            }
+            else
+            {
+                salesadditem.IsEnabled = false;
+
+            }
+            salesadditem.Visibility = System.Windows.Visibility.Visible;
+        }
+
+            private void Button_Click(object sender, RoutedEventArgs e)
         {
             InventoryItem newInvItem;
             if ((sender as Button) == salesadditem) { 
-                newInvItem = new InventoryItem { ID = "" + _id, Name = drpdwntext, QuantityCurrent = int.Parse(qtextbox.Text) };
+                newInvItem = new InventoryItem { ID = "" + _id, Name = itemnamebox.Text, QuantityCurrent = int.Parse(qtextbox.Text) };
                 qtextbox.Clear();
                 _id++;
 
@@ -111,12 +144,13 @@ namespace PHP_SRePS
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            isbuttonEnabled();
         }
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            drpdwntext = itemnamebox.Text;
+            
+            isbuttonEnabled();
         }
     }
 }
