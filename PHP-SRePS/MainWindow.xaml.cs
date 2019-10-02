@@ -35,6 +35,8 @@ namespace PHP_SRePS
             _dg = new DataGrid();
             InitDataGrid(_dg);
 
+            
+
             try
             {
                 SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
@@ -84,32 +86,19 @@ namespace PHP_SRePS
             */
         }
 
-        private void isbuttonEnabled()
-        {
-            if ((qtextbox.Text != String.Empty) && (itemnamebox.Text != String.Empty))
-            {
-                salesadditem.IsEnabled = true;
-
-            }
-            else
-            {
-                salesadditem.IsEnabled = false;
-
-            }
-            salesadditem.Visibility = System.Windows.Visibility.Visible;
-        }
+        
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-        InventoryItem newInvItem;
-        if ((sender as Button) == salesadditem) { 
-            newInvItem = new InventoryItem { ID = "" + _id, Name = itemnamebox.Text, QuantityCurrent = int.Parse(qtextbox.Text) };
-            qtextbox.Clear();
-            _id++;
+           InventoryItem newInvItem;
+           if ((sender as Button) == salesadditem) { 
+                newInvItem = new InventoryItem { ID = "" + _id, Name = itemnamebox.Text, QuantityCurrent = int.Parse(qtextbox.Text) };
+                qtextbox.Clear();
+                _id++;
 
-            _inventoryItems.Add(newInvItem);
-            _dg.Items.Add(newInvItem);
-        }
+                _inventoryItems.Add(newInvItem);
+                _dg.Items.Add(newInvItem);
+            }
 
 
         }
@@ -144,15 +133,29 @@ namespace PHP_SRePS
             dg.Columns.Add(textColumnQuantity);
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void qtextboxTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            isbuttonEnabled();
+            qtextbox = (sender as TextBox);
+
+            if (String.IsNullOrEmpty(qtextbox.Text))
+            {
+                salesadditem.IsEnabled= false;
+            }
+            else
+            {
+                salesadditem.IsEnabled = true;
+
+            }
         }
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             
-            isbuttonEnabled();
+            
+        }
+        private void comboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           
         }
 
         private void ProductWindowButtonClick(object sender, RoutedEventArgs e)

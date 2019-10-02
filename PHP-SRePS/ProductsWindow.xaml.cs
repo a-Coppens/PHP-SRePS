@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data.Entity.Core.Objects;
-using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +6,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Data.SqlClient;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 namespace PHP_SRePS
 {
@@ -21,6 +21,7 @@ namespace PHP_SRePS
     public partial class ProductsWindow : Window
     {
 
+        
         private DataGrid _products;
         srepsDatabase data = new srepsDatabase();
 
@@ -32,6 +33,31 @@ namespace PHP_SRePS
             //InitDataGrid(_products);
         }
 
+        private void Add_Clicked(object sender, RoutedEventArgs e)
+        {
+            if ((sender as Button) == additembutton)
+            {
+                using (SqlConnection connection = new SqlConnection(@"Data Source = 'php-sreps.database.windows.net'; User ID = 'swinAdmin'; Password = '__admin12'; Initial Catalog = 'php-sreps';"))
+                {
+                    String query = "INSERT INTO dbo.Products (productName, currentQuantity) VALUES (@name, @quantity)";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@name", additemname.Text);
+                        command.Parameters.AddWithValue("@quantity", additemquantity.Text);                       
+
+                        connection.Open();
+                        int result = command.ExecuteNonQuery();
+
+                        // Check Error
+                        if (result < 0)
+                            Console.WriteLine("Error inserting data into Database!");
+                    }
+                }
+
+            }
+        }
+
         private void Close_Clicked(object sender, RoutedEventArgs e)
         {
             Window_Closed();
@@ -41,6 +67,7 @@ namespace PHP_SRePS
         {
             Window_Closed();
         }
+        
 
         private void Window_Closed()
         {
@@ -51,6 +78,8 @@ namespace PHP_SRePS
                 main.Show();
             
         }
+
+        
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

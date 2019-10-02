@@ -45,7 +45,7 @@
             </InlineUIContainer></TextBlock>
         <Button x:Name="productWindowButton" Content="Products" Grid.Column="5" HorizontalAlignment="Left" Margin="232.8,12,0,0" Grid.Row="1" VerticalAlignment="Top" Width="154" Click="ProductWindowButtonClick" Height="26" Grid.ColumnSpan="2"/>
         <!-- TODO: Make inputTextBoxQuantity allow number entry only -->
-        <TextBox x:Name="qtextbox" Grid.Column="1" HorizontalAlignment="Left" Height="27" Margin="175,15,0,0" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Top" Width="109" AutomationProperties.HelpText="Quantity" AutomationProperties.IsRequiredForForm="True">
+        <TextBox x:Name="qtextbox" Grid.Column="1" Height="27" Margin="175,15,83.2,0" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Top" AutomationProperties.HelpText="Quantity" AutomationProperties.IsRequiredForForm="True">
             <TextBox.Style>
                 <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
                     <Style.Resources>
@@ -69,7 +69,7 @@
                 </Style>
             </TextBox.Style>
         </TextBox>
-        <Button x:Name="salesadditem" Content="Add" Grid.Column="1" HorizontalAlignment="Left" Margin="304,16,0,0" Grid.Row="2" VerticalAlignment="Top" Width="53" Click="Button_Click" Height="26"/>
-        <ComboBox x:Name="itemnamebox" Grid.Column="1" HorizontalAlignment="Left" Margin="0,15,0,0" ItemsSource="{Binding}" Grid.Row="2" VerticalAlignment="Top" Width="170"/>
+        <Button x:Name="salesadditem" Content="Add" Grid.Column="1" HorizontalAlignment="Left" Margin="304,16,0,0" Grid.Row="2" IsDefault="True"  VerticalAlignment="Top" Width="53" Click="Button_Click" Height="26"/>
+        <ComboBox x:Name="itemnamebox" Grid.Column="1" HorizontalAlignment="Left" Margin="0,15,0,0" ItemsSource="{Binding}" Grid.Row="2" VerticalAlignment="Top" Width="170" SelectedIndex="0"/>
     </Grid>
 </Window>
