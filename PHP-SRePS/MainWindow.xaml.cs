@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Data.SqlClient;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -21,6 +22,7 @@ namespace PHP_SRePS
     public partial class MainWindow : Window
     {
         DataGrid _dg;
+        String drpdwntext="";
         private readonly List<InventoryItem> _inventoryItems = new List<InventoryItem>();
         private int _id = 1;
 
@@ -32,6 +34,42 @@ namespace PHP_SRePS
 
             _dg = new DataGrid();
             InitDataGrid(_dg);
+
+            try
+            {
+                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+                builder.DataSource = "php-sreps.database.windows.net";
+                builder.UserID = "swinAdmin";
+                builder.Password = "__admin12";
+                builder.InitialCatalog = "php-sreps";
+
+                using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
+                {
+                    
+                    connection.Open();
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("select * from Products; ");
+                    String sql = sb.ToString();
+                    int i = 0;
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                itemnamebox.Items.Add(reader["productName"].ToString());
+                                i+=1;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+
+            
 
             /*
             int[] scores = new int[] { 50, 75, 125, 25, 10, 7 };
@@ -46,22 +84,39 @@ namespace PHP_SRePS
             */
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void isbuttonEnabled()
         {
-            InventoryItem newInvItem = new InventoryItem { ID = "M" + _id, Name = inputTextBoxName.Text, QuantityCurrent = int.Parse(inputTextBoxQuantity.Text) };
-            inputTextBoxName.Clear();
-            inputTextBoxQuantity.Clear();
-            _id++;
+            if ((qtextbox.Text != String.Empty) && (itemnamebox.Text != String.Empty))
+            {
+                salesadditem.IsEnabled = true;
 
-            _inventoryItems.Add(newInvItem);
-            _dg.Items.Add(newInvItem);
+            }
+            else
+            {
+                salesadditem.IsEnabled = false;
+
+            }
+            salesadditem.Visibility = System.Windows.Visibility.Visible;
+        }
+
+            private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            InventoryItem newInvItem;
+            if ((sender as Button) == salesadditem) { 
+                newInvItem = new InventoryItem { ID = "" + _id, Name = itemnamebox.Text, QuantityCurrent = int.Parse(qtextbox.Text) };
+                qtextbox.Clear();
+                _id++;
+
+                _inventoryItems.Add(newInvItem);
+                _dg.Items.Add(newInvItem);
+            }
         }
 
         void InitDataGrid(DataGrid dg)
         {
             MainGrid.Children.Add(dg);
             Grid.SetRow(dg, 4);
-            Grid.SetColumn(dg, 3);
+            Grid.SetColumn(dg, 1);
             dg.Height = 250;
 
             DataGridTextColumn textColumnID = new DataGridTextColumn
@@ -85,6 +140,17 @@ namespace PHP_SRePS
             dg.Columns.Add(textColumnID);
             dg.Columns.Add(textColumnName);
             dg.Columns.Add(textColumnQuantity);
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            isbuttonEnabled();
+        }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+            isbuttonEnabled();
         }
     }
 }
