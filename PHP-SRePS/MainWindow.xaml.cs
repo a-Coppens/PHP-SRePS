@@ -159,7 +159,7 @@ namespace PHP_SRePS
         {
             ProductsWindow productWindow = new ProductsWindow();
             App.Current.MainWindow = productWindow;
-            //this.Close();
+            this.Close();
             productWindow.Show();
         }
     }

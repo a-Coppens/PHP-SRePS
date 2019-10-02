@@ -5,8 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PHP_SRePS"
         mc:Ignorable="d"
-        Title="ProductsWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="ProductsWindow" Height="450" Width="800" Loaded="Window_Loaded">
+    <Grid Name ="ProductGrid">
+        <!-- Specify a number of columns to place elements in-->
+        <!-- add more or delete these as needed -->
+        <!-- auto = fits to size of element we place-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="auto" MinWidth="473.333" />
+            <ColumnDefinition Width="auto" MinWidth="71.333" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Specify a number of rows to place elements in -->
+        <!-- add more or delete these as needed -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto" MinHeight="356"/>
+            <RowDefinition Height="14.667"/>
+        </Grid.RowDefinitions>
+        <Button Content="Apply" Grid.Column="3" HorizontalAlignment="Left" Margin="4.333,28.667,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="Apply_Clicked" Height="20"/>
+        <Button Content="Close" Grid.Column="3" HorizontalAlignment="Left" Margin="4.333,53.667,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="Close_Clicked" Height="20" />
+        <DataGrid Name="myDataGrid" Grid.Column="1" HorizontalAlignment="Left" Height="364" Margin="0,21,0,0" VerticalAlignment="Top" Width="468" RenderTransformOrigin="-3.74,-1.593" Grid.RowSpan="3"/>
     </Grid>
 </Window>
