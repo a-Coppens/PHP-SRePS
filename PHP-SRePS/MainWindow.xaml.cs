@@ -48,7 +48,7 @@ namespace PHP_SRePS
                     
                     connection.Open();
                     StringBuilder sb = new StringBuilder();
-                    sb.Append("select * from Products; ");
+                    sb.Append("SELECT * FROM dbo.Products;");
                     String sql = sb.ToString();
                     int i = 0;
                     using (SqlCommand command = new SqlCommand(sql, connection))
@@ -58,7 +58,7 @@ namespace PHP_SRePS
                             while (reader.Read())
                             {
                                 itemnamebox.Items.Add(reader["productName"].ToString());
-                                i+=1;
+                                i++;
                             }
                         }
                     }
@@ -99,17 +99,19 @@ namespace PHP_SRePS
             salesadditem.Visibility = System.Windows.Visibility.Visible;
         }
 
-            private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            InventoryItem newInvItem;
-            if ((sender as Button) == salesadditem) { 
-                newInvItem = new InventoryItem { ID = "" + _id, Name = itemnamebox.Text, QuantityCurrent = int.Parse(qtextbox.Text) };
-                qtextbox.Clear();
-                _id++;
+        InventoryItem newInvItem;
+        if ((sender as Button) == salesadditem) { 
+            newInvItem = new InventoryItem { ID = "" + _id, Name = itemnamebox.Text, QuantityCurrent = int.Parse(qtextbox.Text) };
+            qtextbox.Clear();
+            _id++;
 
-                _inventoryItems.Add(newInvItem);
-                _dg.Items.Add(newInvItem);
-            }
+            _inventoryItems.Add(newInvItem);
+            _dg.Items.Add(newInvItem);
+        }
+
+
         }
 
         void InitDataGrid(DataGrid dg)
@@ -151,6 +153,14 @@ namespace PHP_SRePS
         {
             
             isbuttonEnabled();
+        }
+
+        private void ProductWindowButtonClick(object sender, RoutedEventArgs e)
+        {
+            ProductsWindow productWindow = new ProductsWindow();
+            App.Current.MainWindow = productWindow;
+            //this.Close();
+            productWindow.Show();
         }
     }
 }
