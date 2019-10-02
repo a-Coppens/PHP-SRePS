@@ -64,6 +64,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="loginscreen.xaml.cs">
+      <DependentUpon>loginscreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Product.cs">
       <DependentUpon>srepsDatabase.tt</DependentUpon>
     </Compile>
@@ -82,6 +85,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>srepsDatabase.edmx</DependentUpon>
     </Compile>
+    <Page Include="loginscreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

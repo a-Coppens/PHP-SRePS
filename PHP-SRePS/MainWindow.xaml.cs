@@ -108,6 +108,7 @@ namespace PHP_SRePS
             MainGrid.Children.Add(dg);
             Grid.SetRow(dg, 4);
             Grid.SetColumn(dg, 1);
+            Grid.SetColumnSpan(dg, 3);
             dg.Height = 250;
 
             DataGridTextColumn textColumnID = new DataGridTextColumn
