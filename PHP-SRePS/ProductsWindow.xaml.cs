@@ -26,8 +26,7 @@ namespace PHP_SRePS
 
         
         private DataGrid _products;
-        srepsDatabase data = new srepsDatabase();
-
+        
         public ProductsWindow()
         {
             InitializeComponent();
