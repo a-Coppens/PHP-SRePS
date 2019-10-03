@@ -29,6 +29,40 @@ namespace PHP_SRePS
         public ProductsWindow()
         {
             InitializeComponent();
+            try
+            {
+                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+                builder.DataSource = "php-sreps.database.windows.net";
+                builder.UserID = "swinAdmin";
+                builder.Password = "__admin12";
+                builder.InitialCatalog = "php-sreps";
+
+                using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
+                {
+
+                    connection.Open();
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("SELECT * FROM dbo.Products;");
+                    String sql = sb.ToString();
+                    int i = 0;
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                edititemname.Items.Add(reader["productName"].ToString());
+                                i++;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+
         }
 
         private void Add_Clicked(object sender, RoutedEventArgs e)
