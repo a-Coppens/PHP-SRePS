@@ -20,6 +20,7 @@ namespace PHP_SRePS
     /// </summary>
     public partial class loginscreen : Window
     {
+        string loginid="";
         public loginscreen()
         {
             InitializeComponent();
@@ -27,7 +28,7 @@ namespace PHP_SRePS
 
         private void BtnSubmit_Click(object sender, RoutedEventArgs e)
         {
-
+            loginid = txtID.Text;
             SqlConnection sqlConn = new SqlConnection(@"Data Source = 'php-sreps.database.windows.net'; User ID = 'swinAdmin'; Password = '__admin12'; Initial Catalog = 'php-sreps';");
             try
             {
@@ -56,6 +57,10 @@ namespace PHP_SRePS
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+        public string getLoginID()
+        {
+            return loginid;
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)

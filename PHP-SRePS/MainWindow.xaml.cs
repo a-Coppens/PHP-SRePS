@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace PHP_SRePS
 {
     /// <summary>
@@ -21,8 +22,10 @@ namespace PHP_SRePS
     /// </summary>
     public partial class MainWindow : Window
     {
+        private srepsDatabase data = new srepsDatabase();
+
         DataGrid _dg;
-        String drpdwntext="";
+      
         private readonly List<InventoryItem> _inventoryItems = new List<InventoryItem>();
         private int _id = 1;
 
@@ -91,13 +94,59 @@ namespace PHP_SRePS
         private void Button_Click(object sender, RoutedEventArgs e)
         {
            InventoryItem newInvItem;
-           if ((sender as Button) == salesadditem) { 
+           if ((sender as Button) == salesadditem) {
+
+
+                using (SqlConnection connection = new SqlConnection(@"Data Source = 'php-sreps.database.windows.net'; User ID = 'swinAdmin'; Password = '__admin12'; Initial Catalog = 'php-sreps';"))
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("SELECT * FROM dbo.Products;");
+                    String sql = sb.ToString();
+                    int currentitemquantity = 0;
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                if ((reader["productName"].ToString().ToLower() == itemnamebox.Text.ToLower()))
+                                {
+                                    currentitemquantity = int.Parse((reader["currentQuantity"].ToString()));
+                                }
+
+                            }
+                        }
+                    }
+                    connection.Close();
+
+
+                    String query = "UPDATE dbo.Products SET currentQuantity = @curQuan  WHERE productName = @name; ";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                                            
+                        command.Parameters.AddWithValue("@name", itemnamebox.Text);
+                        command.Parameters.AddWithValue("@curQuan",currentitemquantity-int.Parse(qtextbox.Text) );
+
+                        connection.Open();
+                        int result = command.ExecuteNonQuery();
+                        
+                        // Check Error
+                        if (result < 0)
+                            Console.WriteLine("Error inserting data into Database!");
+                        connection.Close();
+                        
+                    }
+                }
+
                 newInvItem = new InventoryItem { ID = "" + _id, Name = itemnamebox.Text, QuantityCurrent = int.Parse(qtextbox.Text) };
                 qtextbox.Clear();
                 _id++;
 
                 _inventoryItems.Add(newInvItem);
                 _dg.Items.Add(newInvItem);
+
+
             }
 
 
@@ -136,16 +185,68 @@ namespace PHP_SRePS
 
         private void qtextboxTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            qtextbox = (sender as TextBox);
+        }
 
-            if (String.IsNullOrEmpty(qtextbox.Text))
+        private void saveChanges_Clicked(object sender, RoutedEventArgs e)
+        {
+            
+            for (int i = 0; i < _dg.Columns.Count; i++)
             {
-                salesadditem.IsEnabled= false;
-            }
-            else
-            {
-                salesadditem.IsEnabled = true;
+                for (int j = 0; j < _dg.Items.Count; j++)
+                {
 
+                    string text = _dg.Columns[i].GetCellContent(_dg.Items[j]).ToString();
+
+                    using (SqlConnection connection = new SqlConnection(@"Data Source = 'php-sreps.database.windows.net'; User ID = 'swinAdmin'; Password = '__admin12'; Initial Catalog = 'php-sreps';"))
+                    {
+
+                        StringBuilder sb = new StringBuilder();
+                        sb.Append("SELECT * FROM dbo.Products;");
+                        String sql = sb.ToString();
+                        int currentproductID = 0;
+                        connection.Open();
+                        using (SqlCommand command = new SqlCommand(sql, connection))
+                        {
+                            using (SqlDataReader reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    if ((reader["productName"].ToString().ToLower() == _dg.Columns[1].GetCellContent(_dg.Items[j]).ToString().ToLower()))
+                                    {
+                                        currentproductID = int.Parse((reader["productID"].ToString()));
+                                    }
+
+                                }
+                            }
+                        }
+                        connection.Close();
+
+
+
+                        String query = "INSERT INTO dbo.Sales (productID, saleQuantity, employeeID) VALUES (@pid, @quantity, @loginid)";
+
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            loginscreen obj = new loginscreen();
+
+                            command.Parameters.AddWithValue("@pid", currentproductID);
+                            command.Parameters.AddWithValue("@quantity", _dg.Columns[2].GetCellContent(_dg.Items[j]).ToString());
+                            string logid = obj.getLoginID();
+                            command.Parameters.AddWithValue("@loginid", logid  );
+
+                            connection.Open();
+                            int result = command.ExecuteNonQuery();
+                            
+
+                           
+
+                            // Check Error
+                            if (result < 0)
+                                Console.WriteLine("Error inserting data into Database!");
+                        }
+                        connection.Close();
+                    }
+                }
             }
         }
 
