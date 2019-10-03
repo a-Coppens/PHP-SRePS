@@ -49,7 +49,7 @@ namespace PHP_SRePS
                         {
                             while (reader.Read())
                             {
-                                if ((reader["productName"].ToString()==additemname.Text)){
+                                if ((reader["productName"].ToString().ToLower()==additemname.Text.ToLower())){
                                     checkitemindb = true;
                                     currentitemquantity = int.Parse((reader["currentQuantity"].ToString()));
                                 }
@@ -70,6 +70,9 @@ namespace PHP_SRePS
                         int result = command.ExecuteNonQuery();
                         ProductsWindow productWindow = new ProductsWindow();
 
+                        productWindow.Show();
+                        Close();
+
                             // Check Error
                             if (result < 0)
                                 Console.WriteLine("Error inserting data into Database!");
@@ -86,7 +89,10 @@ namespace PHP_SRePS
 
                             connection.Open();
                             int result = command.ExecuteNonQuery();
+                            ProductsWindow productWindow = new ProductsWindow();
 
+                            productWindow.Show();
+                            Close();
                             // Check Error
                             if (result < 0)
                                 Console.WriteLine("Error inserting data into Database!");
