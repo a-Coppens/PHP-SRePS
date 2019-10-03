@@ -46,10 +46,14 @@ namespace PHP_SRePS
 
                         connection.Open();
                         int result = command.ExecuteNonQuery();
+                        ProductsWindow productWindow = new ProductsWindow();
 
+                        productWindow.Show();
+                        Close();
                         // Check Error
                         if (result < 0)
                             Console.WriteLine("Error inserting data into Database!");
+
                     }
                 }
 
