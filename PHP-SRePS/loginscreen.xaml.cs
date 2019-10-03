@@ -34,16 +34,18 @@ namespace PHP_SRePS
                 if (sqlConn.State == System.Data.ConnectionState.Closed)
                     sqlConn.Open();
                 String query = "SELECT COUNT(1) FROM loginInfo WHERE ClientName=@ClientName AND Password=@Password";
-                SqlCommand sqlCmd = new SqlCommand(query, sqlConn);
-                sqlCmd.CommandType = System.Data.CommandType.Text;
+                SqlCommand sqlCmd = new SqlCommand(query, sqlConn)
+                {
+                    CommandType = System.Data.CommandType.Text
+                };
                 sqlCmd.Parameters.AddWithValue("@ClientName", txtID.Text);
-                sqlCmd.Parameters.AddWithValue("@Password", txtpassword.Text);
+                sqlCmd.Parameters.AddWithValue("@Password", txtpassword.Password);
                 int count = Convert.ToInt32(sqlCmd.ExecuteScalar());
                 if(count==1)
                 {
                     MainWindow dashboard = new MainWindow();
                     dashboard.Show();
-                    this.Close();
+                    Close();
                 }
                 else
                 {
@@ -54,6 +56,11 @@ namespace PHP_SRePS
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
         }
     }
 }

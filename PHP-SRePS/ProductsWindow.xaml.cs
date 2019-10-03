@@ -24,9 +24,7 @@ namespace PHP_SRePS
         // Instance of our database (product table)
         private srepsDatabase data = new srepsDatabase();
 
-        
         private DataGrid _products;
-        srepsDatabase data = new srepsDatabase();
 
         public ProductsWindow()
         {
