@@ -37,24 +37,62 @@ namespace PHP_SRePS
             {
                 using (SqlConnection connection = new SqlConnection(@"Data Source = 'php-sreps.database.windows.net'; User ID = 'swinAdmin'; Password = '__admin12'; Initial Catalog = 'php-sreps';"))
                 {
-                    String query = "INSERT INTO dbo.Products (productName, currentQuantity) VALUES (@name, @quantity)";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("SELECT * FROM dbo.Products;");
+                    String sql = sb.ToString();
+                    Boolean checkitemindb = false;
+                    int currentitemquantity = 0;
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(sql, connection))
                     {
-                        command.Parameters.AddWithValue("@name", additemname.Text);
-                        command.Parameters.AddWithValue("@quantity", additemquantity.Text);                       
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                if ((reader["productName"].ToString()==additemname.Text)){
+                                    checkitemindb = true;
+                                    currentitemquantity = int.Parse((reader["currentQuantity"].ToString()));
+                                }
+                                
+                            }
+                        }
+                    }
+                    connection.Close();
+                    if (checkitemindb == false) {
+                        String query = "INSERT INTO dbo.Products (productName, currentQuantity) VALUES (@name, @quantity)";
+
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@name", additemname.Text);
+                            command.Parameters.AddWithValue("@quantity", additemquantity.Text);
 
                         connection.Open();
                         int result = command.ExecuteNonQuery();
                         ProductsWindow productWindow = new ProductsWindow();
 
-                        productWindow.Show();
-                        Close();
-                        // Check Error
-                        if (result < 0)
-                            Console.WriteLine("Error inserting data into Database!");
-
+                            // Check Error
+                            if (result < 0)
+                                Console.WriteLine("Error inserting data into Database!");
+                        }
                     }
+                    else
+                    {
+                        String query = "UPDATE dbo.Products SET currentQuantity = @curQuan  WHERE productName = @name; ";
+
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@name", additemname.Text);
+                            command.Parameters.AddWithValue("@curQuan", int.Parse(additemquantity.Text)+currentitemquantity);
+
+                            connection.Open();
+                            int result = command.ExecuteNonQuery();
+
+                            // Check Error
+                            if (result < 0)
+                                Console.WriteLine("Error inserting data into Database!");
+                        }
+                    }
+                    connection.Close();
                 }
 
             }
