@@ -22,84 +22,16 @@
         </LinearGradientBrush>
     </Window.Background>
     <Grid Name="MainGrid">
-        <!-- Specify a number of columns to place elements in-->
-        <!-- add more or delete these as needed -->
-        <!-- auto = fits to size of element we place-->
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20" />
-            <ColumnDefinition Width="auto"  />
-            <ColumnDefinition Width="auto"   />
-            <ColumnDefinition Width="auto"  />
-            <ColumnDefinition Width="auto"  />
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="20" />
-        </Grid.ColumnDefinitions>
-
-        <!-- Specify a number of rows to place elements in -->
-        <!-- add more or delete these as needed -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="20"/>
-        </Grid.RowDefinitions>
-
-        <!-- Specify an element such as a TextBlock as shown below -->
-        <!-- More options to edit in the properties tab when -->
-        <!-- you click in the element tags Grid.Column and Grid.Row-->
-        <!-- specify the elements position in the window -->
-        <TextBlock Grid.Column="1" Grid.Row="1" Text="People Health Pharmacy" Grid.ColumnSpan="3"
-                   FontFamily="Segoe UI Light" FontSize="36"  Foreground="#FFFDFEFD" Margin="0,0,1.667,0"/>
-        <TextBlock x:Name="OutputText" Grid.Column="1" Grid.Row="1" 
-                   FontFamily="Segoe UI Light" FontSize="36" Margin="0,0,61,0"><InlineUIContainer>
-                <TextBlock TextWrapping="Wrap"/>
-            </InlineUIContainer></TextBlock>
-        <Button x:Name="productWindowButton" Content="Products" Grid.Column="5" HorizontalAlignment="Right" Margin="0,20,19.6,0" Grid.Row="2" VerticalAlignment="Top" Width="154" Click="ProductWindowButtonClick" Height="26" BorderBrush="#FF4D4D4D" BorderThickness="0" VerticalContentAlignment="Center" Padding="1" Background="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" Grid.ColumnSpan="2">
-            <Button.Foreground>
-                <SolidColorBrush Color="{DynamicResource Color4}"/>
-            </Button.Foreground>
-        </Button>
-        <!-- TODO: Make inputTextBoxQuantity allow number entry only -->
-        <TextBox x:Name="qtextbox" Grid.Column="2" HorizontalAlignment="Left" Height="27" Margin="10,15,0,0" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Top" Width="109"  AutomationProperties.IsRequiredForForm="True" BorderThickness="0,0,0,1" Foreground="#FF282828">
-            <TextBox.Style>
-                <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
-                    <Style.Resources>
-                        <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
-                            <VisualBrush.Visual>
-                                <Label Content="Quantity" Foreground="Gray" />
-                            </VisualBrush.Visual>
-                        </VisualBrush>
-                    </Style.Resources>
-                    <Style.Triggers>
-                        <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
-                            <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
-                        </Trigger>
-                        <Trigger Property="Text" Value="{x:Null}">
-                            <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
-                        </Trigger>
-                        <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter Property="Background" Value="White" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBox.Style>
-
-            <TextBox.BorderBrush>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="White" Offset="1"/>
-                </LinearGradientBrush>
-            </TextBox.BorderBrush>
-        </TextBox>
-        <Button x:Name="salesadditem" Content="Add" Grid.Column="3" HorizontalAlignment="Left" Margin="10,15,0,5" Grid.Row="2" VerticalAlignment="Top" Width="53" Click="Button_Click" Height="26" Background="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" BorderThickness="0" Foreground="#FFF9E7BB"/>
-        <ComboBox x:Name="itemnamebox" Grid.Column="1" HorizontalAlignment="Left" Margin="0,15,0,0" ItemsSource="{Binding}" Grid.Row="2" VerticalAlignment="Top" Width="170" Background="#FF5E3180" BorderThickness="0,0,0,1" Foreground="#FF3399FF" BorderBrush="#FF5E3180" Height="27" SelectedIndex="0"/>
-        <Button x:Name="savechangesbd" Click="saveChanges_Clicked" Content="Save Changes" Grid.Column="5" HorizontalAlignment="Right" Margin="0,20,19.6,0" Grid.Row="1" VerticalAlignment="Top" Width="154"  Height="26" BorderBrush="#FF4D4D4D" BorderThickness="0" VerticalContentAlignment="Center" Padding="1" Background="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" Grid.ColumnSpan="2">
-            <Button.Foreground>
-                <SolidColorBrush Color="{DynamicResource Color4}"/>
-            </Button.Foreground>
-        </Button>
+        <TabControl>
+            <TabItem Header="Sales Records">
+                <local:SalesScreen/>
+            </TabItem>
+            <TabItem Header="Products">
+                <local:ProductsScreen/>
+            </TabItem>
+            <TabItem Header="Report">
+                <TextBlock Text="TODO" />
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

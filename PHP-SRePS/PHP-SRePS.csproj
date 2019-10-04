@@ -70,6 +70,12 @@
     <Compile Include="Product.cs">
       <DependentUpon>srepsDatabase.tt</DependentUpon>
     </Compile>
+    <Compile Include="ProductsScreen.xaml.cs">
+      <DependentUpon>ProductsScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SalesScreen.xaml.cs">
+      <DependentUpon>SalesScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="srepsDatabase.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -102,15 +108,16 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ProductsWindow.xaml">
+    <Page Include="ProductsScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SalesScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProductsWindow.xaml.cs">
-      <DependentUpon>ProductsWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

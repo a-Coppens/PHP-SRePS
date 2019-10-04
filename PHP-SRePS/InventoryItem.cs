@@ -8,7 +8,6 @@ namespace PHP_SRePS
 {
     public class InventoryItem
     {
-        public string ID { get; set; }
         public string Name { get; set; }
 
         // The dictionary will track quantity changes more accurately than what the get properties will return
