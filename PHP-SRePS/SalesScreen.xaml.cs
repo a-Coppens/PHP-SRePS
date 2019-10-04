@@ -182,12 +182,13 @@ namespace PHP_SRePS
                         }
                         connection.Close();
 
-                        string query = "INSERT INTO dbo.Sales (productID, saleQuantity, employeeID) VALUES (@pid, @quantity, @loginid)";
+                        string query = "INSERT INTO dbo.Sales (productID, saleDate, saleQuantity, employeeID) VALUES (@pid, @date, @quantity, @loginid)";
 
                         using (SqlCommand command = new SqlCommand(query, connection))
                         {
                             command.Parameters.AddWithValue("@pid", currentProductID);
-                            command.Parameters.AddWithValue("@quantity", dataGrid.Columns[1].GetCellContent(dataGrid.Items[j]).ToString());
+                            command.Parameters.AddWithValue("@date", DateTime.Today);
+                            command.Parameters.AddWithValue("@quantity", _inventoryItems[j].QuantityCurrent);
                             command.Parameters.AddWithValue("@loginid", loginscreen.GetLoginID());
 
                             connection.Open();
