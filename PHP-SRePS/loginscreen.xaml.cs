@@ -20,7 +20,7 @@ namespace PHP_SRePS
     /// </summary>
     public partial class loginscreen : Window
     {
-        static string loginid = "";
+        static string loginname = "";
         public loginscreen()
         {
             InitializeComponent();
@@ -28,12 +28,11 @@ namespace PHP_SRePS
 
         private void BtnSubmit_Click(object sender, RoutedEventArgs e)
         {
-            loginid = txtID.Text;
+            loginname = txtID.Text;
             SqlConnection sqlConn = new SqlConnection(@"Data Source = 'php-sreps.database.windows.net'; User ID = 'swinAdmin'; Password = '__admin12'; Initial Catalog = 'php-sreps';");
             try
             {
-                if (sqlConn.State == System.Data.ConnectionState.Closed)
-                    sqlConn.Open();
+                if (sqlConn.State == System.Data.ConnectionState.Closed) sqlConn.Open();
                 string query = "SELECT COUNT(1) FROM loginInfo WHERE ClientName=@ClientName AND Password=@Password";
                 SqlCommand sqlCmd = new SqlCommand(query, sqlConn)
                 {
@@ -42,7 +41,7 @@ namespace PHP_SRePS
                 sqlCmd.Parameters.AddWithValue("@ClientName", txtID.Text);
                 sqlCmd.Parameters.AddWithValue("@Password", txtpassword.Password);
                 int count = Convert.ToInt32(sqlCmd.ExecuteScalar());
-                if(count==1)
+                if (count==1)
                 {
                     MainWindow dashboard = new MainWindow();
                     dashboard.Show();
@@ -50,7 +49,7 @@ namespace PHP_SRePS
                 }
                 else
                 {
-                    MessageBox.Show("Username or Password is incorrect.");
+                    MessageBox.Show("Username or password is incorrect.");
                 }
             }       
             catch (Exception ex)
@@ -58,9 +57,9 @@ namespace PHP_SRePS
                 MessageBox.Show(ex.Message);
             }
         }
-        public static string GetLoginID()
+        public static string GetLoginName()
         {
-            return loginid;
+            return loginname;
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)

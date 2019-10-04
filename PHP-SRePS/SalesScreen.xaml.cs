@@ -153,53 +153,57 @@ namespace PHP_SRePS
 
         private void SaveChanges_Clicked(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < dataGrid.Columns.Count; i++)
+            for (int j = 0; j < dataGrid.Items.Count; j++)
             {
-                for (int j = 0; j < dataGrid.Items.Count; j++)
+                using (SqlConnection connection = new SqlConnection(@"Data Source = 'php-sreps.database.windows.net'; User ID = 'swinAdmin'; Password = '__admin12'; Initial Catalog = 'php-sreps';"))
                 {
-                    string text = dataGrid.Columns[i].GetCellContent(dataGrid.Items[j]).ToString();
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("SELECT * FROM dbo.Products;");
+                    string sql = sb.ToString();
+                    int currentProductID = int.MaxValue;
+                    connection.Open();
 
-                    using (SqlConnection connection = new SqlConnection(@"Data Source = 'php-sreps.database.windows.net'; User ID = 'swinAdmin'; Password = '__admin12'; Initial Catalog = 'php-sreps';"))
+                    using (SqlCommand command = new SqlCommand(sql, connection))
                     {
-                        StringBuilder sb = new StringBuilder();
-                        sb.Append("SELECT * FROM dbo.Products;");
-                        string sql = sb.ToString();
-                        int currentProductID = 0;
-                        connection.Open();
-
-                        using (SqlCommand command = new SqlCommand(sql, connection))
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            using (SqlDataReader reader = command.ExecuteReader())
+                            while (reader.Read())
                             {
-                                while (reader.Read())
+                                if ((reader["productName"].ToString().ToLower() == _inventoryItems[j].Name.ToLower()))
                                 {
-                                    if ((reader["productName"].ToString().ToLower() == dataGrid.Columns[1].GetCellContent(dataGrid.Items[j]).ToString().ToLower()))
-                                    {
-                                        currentProductID = int.Parse((reader["productID"].ToString()));
-                                    }
+                                    currentProductID = int.Parse((reader["productID"].ToString()));
                                 }
                             }
                         }
-                        connection.Close();
+                    }
+                    connection.Close();
 
-                        string query = "INSERT INTO dbo.Sales (productID, saleDate, saleQuantity, employeeID) VALUES (@pid, @date, @quantity, @loginid)";
+                    if (currentProductID != int.MaxValue)
+                    {
+                        string query = "INSERT INTO dbo.Sales (productID, saleDate, salesQuantity, employee) VALUES (@pid, @date, @quantity, @loginid)";
 
                         using (SqlCommand command = new SqlCommand(query, connection))
                         {
                             command.Parameters.AddWithValue("@pid", currentProductID);
                             command.Parameters.AddWithValue("@date", DateTime.Today);
                             command.Parameters.AddWithValue("@quantity", _inventoryItems[j].QuantityCurrent);
-                            command.Parameters.AddWithValue("@loginid", loginscreen.GetLoginID());
+                            command.Parameters.AddWithValue("@loginid", loginscreen.GetLoginName());
 
                             connection.Open();
-                            //int result = command.ExecuteNonQuery();
+                            int result = command.ExecuteNonQuery();
 
-                            //if (result < 0) Console.WriteLine("Error inserting data into Database!");
+                            if (result < 0) Console.WriteLine("Error inserting data into Database!");
                         }
                         connection.Close();
                     }
+                    else
+                    {
+                        Console.WriteLine("Error, currentProductID not found in database");
+                    }
                 }
             }
+            _inventoryItems.Clear();
+            dataGrid.Items.Clear();
         }
     }
 }
