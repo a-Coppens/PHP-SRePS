@@ -20,7 +20,7 @@ namespace PHP_SRePS
     /// </summary>
     public partial class loginscreen : Window
     {
-        string loginid="";
+        string loginid = "";
         public loginscreen()
         {
             InitializeComponent();
@@ -34,7 +34,7 @@ namespace PHP_SRePS
             {
                 if (sqlConn.State == System.Data.ConnectionState.Closed)
                     sqlConn.Open();
-                String query = "SELECT COUNT(1) FROM loginInfo WHERE ClientName=@ClientName AND Password=@Password";
+                string query = "SELECT COUNT(1) FROM loginInfo WHERE ClientName=@ClientName AND Password=@Password";
                 SqlCommand sqlCmd = new SqlCommand(query, sqlConn)
                 {
                     CommandType = System.Data.CommandType.Text
