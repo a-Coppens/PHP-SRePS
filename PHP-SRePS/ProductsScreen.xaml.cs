@@ -63,6 +63,7 @@ namespace PHP_SRePS
                             connection.Open();
                             int result = command.ExecuteNonQuery();
                             LoadProductsToDataGrid();
+                            edititemname.Items.Add(additemname.Text);
                             // Check error
                             if (result < 0) Console.WriteLine("Error inserting data into database!");
                         }
