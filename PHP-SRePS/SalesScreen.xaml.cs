@@ -186,17 +186,14 @@ namespace PHP_SRePS
 
                         using (SqlCommand command = new SqlCommand(query, connection))
                         {
-                            loginscreen obj = new loginscreen();
-
                             command.Parameters.AddWithValue("@pid", currentProductID);
                             command.Parameters.AddWithValue("@quantity", dataGrid.Columns[1].GetCellContent(dataGrid.Items[j]).ToString());
-                            string logid = obj.getLoginID();
-                            command.Parameters.AddWithValue("@loginid", logid);
+                            command.Parameters.AddWithValue("@loginid", loginscreen.GetLoginID());
 
                             connection.Open();
-                            int result = command.ExecuteNonQuery();
+                            //int result = command.ExecuteNonQuery();
 
-                            if (result < 0) Console.WriteLine("Error inserting data into Database!");
+                            //if (result < 0) Console.WriteLine("Error inserting data into Database!");
                         }
                         connection.Close();
                     }

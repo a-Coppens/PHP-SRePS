@@ -20,7 +20,7 @@ namespace PHP_SRePS
     /// </summary>
     public partial class loginscreen : Window
     {
-        string loginid = "";
+        static string loginid = "";
         public loginscreen()
         {
             InitializeComponent();
@@ -58,7 +58,7 @@ namespace PHP_SRePS
                 MessageBox.Show(ex.Message);
             }
         }
-        public string getLoginID()
+        public static string GetLoginID()
         {
             return loginid;
         }
