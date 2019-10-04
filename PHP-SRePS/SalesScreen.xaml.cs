@@ -189,7 +189,7 @@ namespace PHP_SRePS
                             loginscreen obj = new loginscreen();
 
                             command.Parameters.AddWithValue("@pid", currentProductID);
-                            command.Parameters.AddWithValue("@quantity", dataGrid.Columns[2].GetCellContent(dataGrid.Items[j]).ToString());
+                            command.Parameters.AddWithValue("@quantity", dataGrid.Columns[1].GetCellContent(dataGrid.Items[j]).ToString());
                             string logid = obj.getLoginID();
                             command.Parameters.AddWithValue("@loginid", logid);
 

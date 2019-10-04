@@ -62,7 +62,7 @@ namespace PHP_SRePS
                             command.Parameters.AddWithValue("@quantity", additemquantity.Text);
                             connection.Open();
                             int result = command.ExecuteNonQuery();
-
+                            LoadProductsToDataGrid();
                             // Check error
                             if (result < 0) Console.WriteLine("Error inserting data into database!");
                         }
@@ -77,7 +77,7 @@ namespace PHP_SRePS
                             command.Parameters.AddWithValue("@curQuan", int.Parse(additemquantity.Text) + currentItemQuantity);
                             connection.Open();
                             int result = command.ExecuteNonQuery();
-
+                            LoadProductsToDataGrid();
                             if (result < 0) Console.WriteLine("Error inserting data into database!");
                         }
                     }
@@ -99,7 +99,7 @@ namespace PHP_SRePS
 
                     connection.Open();
                     int result = command.ExecuteNonQuery();
-
+                    LoadProductsToDataGrid();
                     // Check Error
                     if (result < 0)
                         Console.WriteLine("Error inserting data into Database!");
