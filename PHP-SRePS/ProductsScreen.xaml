@@ -103,5 +103,6 @@
             </TextBox.Style>
         </TextBox>
         <Button x:Name="edititemchange" Grid.ColumnSpan="2" Click="Change_Clicked" Content="Change" Grid.Column="2" HorizontalAlignment="Left" Margin="18,186,0,0" Grid.Row="1" VerticalAlignment="Top" Width="66"/>
+        <Button x:Name="refresh" Click="Refresh_Click" Content="Refresh" Grid.Column="2" HorizontalAlignment="Left" Margin="18.4,261.2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="66" Grid.ColumnSpan="2"/>
     </Grid>
 </UserControl>
