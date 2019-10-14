@@ -159,5 +159,10 @@ namespace PHP_SRePS
                 Console.WriteLine(e.ToString());
             }
         }
+
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            LoadProductsToDataGrid();
+        }
     }
 }
