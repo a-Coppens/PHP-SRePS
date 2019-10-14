@@ -18,6 +18,7 @@ namespace PHP_SRePS
         public ProductsScreen()
         {
             InitializeComponent();
+            
             LoadProductsToDataGrid();
             LoadProductsToDropdown();
         }
@@ -110,7 +111,7 @@ namespace PHP_SRePS
 
         }
 
-        private void LoadProductsToDataGrid()
+        public void LoadProductsToDataGrid()
         {
             // Defines a query to get all products in 
             // Our product table

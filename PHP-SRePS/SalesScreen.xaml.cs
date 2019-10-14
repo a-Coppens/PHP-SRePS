@@ -200,10 +200,12 @@ namespace PHP_SRePS
                     {
                         Console.WriteLine("Error, currentProductID not found in database");
                     }
+                   
                 }
             }
             _inventoryItems.Clear();
             dataGrid.Items.Clear();
+            
         }
     }
 }

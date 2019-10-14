@@ -22,14 +22,14 @@
         </LinearGradientBrush>
     </Window.Background>
     <Grid Name="MainGrid">
-        <TabControl>
-            <TabItem Header="Sales Records">
+        <TabControl SelectionChanged="TabControl_SelectionChanged">
+            <TabItem Header="Sales Records" Name="salesRecordTab" >
                 <local:SalesScreen/>
             </TabItem>
-            <TabItem Header="Products">
+            <TabItem Header="Products" Name="productTab">
                 <local:ProductsScreen/>
             </TabItem>
-            <TabItem Header="Report">
+            <TabItem Header="Report" Name="ReportTab">
                 <TextBlock Text="TODO" />
             </TabItem>
         </TabControl>
