@@ -39,8 +39,8 @@
         <TextBlock Grid.Column="1" Grid.Row="1" Text="People Health Pharmacy Sales Records" Grid.ColumnSpan="3"
                    FontFamily="Segoe UI Light" FontSize="36"  Foreground="#FFFDFEFD" Margin="0,0,1.667,0"/>
         <!-- TODO: Make inputTextBoxQuantity allow number entry only -->
-        <DataGrid Name="dataGrid" Grid.Column="1" HorizontalAlignment="Left" Height="274" VerticalAlignment="Top" Width="309" RenderTransformOrigin="-3.74,-1.593" Grid.Row="1" Margin="0,53,0,0" ColumnWidth="*"/>
-        <TextBox x:Name="qtextbox" Grid.Column="1" HorizontalAlignment="Left" Height="26" Margin="175,22,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="66"  AutomationProperties.IsRequiredForForm="True" BorderThickness="0,0,0,1" Foreground="#FF282828">
+        <DataGrid Name="dataGrid" Grid.Column="1" HorizontalAlignment="Left" Height="254" VerticalAlignment="Top" Width="309" RenderTransformOrigin="-3.74,-1.593" Grid.Row="1" Margin="0,73,0,0" ColumnWidth="*"/>
+        <TextBox x:Name="qtextbox" Grid.Column="1" HorizontalAlignment="Left" Height="26" Margin="180,41,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="66"  AutomationProperties.IsRequiredForForm="True" BorderThickness="0,0,0,1" Foreground="#FF282828">
             <TextBox.Style>
                 <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
                     <Style.Resources>
@@ -70,8 +70,9 @@
                 </LinearGradientBrush>
             </TextBox.BorderBrush>
         </TextBox>
-        <Button x:Name="salesadditem" Content="Add" Grid.Column="1" HorizontalAlignment="Left" Margin="256,22,0,0" Grid.Row="1" VerticalAlignment="Top" Width="53" Click="Button_Click" Height="26" Background="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" BorderThickness="0" Foreground="#FFF9E7BB"/>
-        <ComboBox x:Name="itemnamebox" Grid.Column="1" HorizontalAlignment="Left" Margin="0,22,0,0" ItemsSource="{Binding}" Grid.Row="1" VerticalAlignment="Top" Width="170" Background="#FF5E3180" BorderThickness="0,0,0,1" Foreground="#FF3399FF" BorderBrush="#FF5E3180" Height="27" SelectedIndex="0"/>
+        <Button x:Name="salesadditem" Content="Add" Grid.Column="1" HorizontalAlignment="Left" Margin="256,41,0,0" Grid.Row="1" VerticalAlignment="Top" Width="53" Click="Button_Click" Height="26" Background="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" BorderThickness="0" Foreground="#FFF9E7BB"/>
+        <ComboBox x:Name="itemnamebox" Grid.Column="1" HorizontalAlignment="Left" Margin="5,41,0,0" ItemsSource="{Binding}" Grid.Row="1" VerticalAlignment="Top" Width="170" Background="#FF5E3180" BorderThickness="0,0,0,1" Foreground="#FF3399FF" BorderBrush="#FF5E3180" Height="27" SelectedIndex="0"/>
+        <DatePicker x:Name="saleDatePicker" Grid.Column="1" Grid.Row="1" Width="150px" HorizontalAlignment="Left" VerticalAlignment="Top" Height="32"/>
         <Button x:Name="savechangesbd" Click="SaveChanges_Clicked" Content="Save Changes" Grid.Column="5" HorizontalAlignment="Right" Margin="0,20,19.6,0" Grid.Row="1" VerticalAlignment="Top" Width="154"  Height="26" BorderBrush="#FF4D4D4D" BorderThickness="0" VerticalContentAlignment="Center" Padding="1" Background="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" Grid.ColumnSpan="2">
             <Button.Foreground>
                 <SolidColorBrush Color="#FFFDFEFD"/>
