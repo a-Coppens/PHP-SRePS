@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PHP_SRePS"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Name ="ProductGrid" Margin="0,-1,-0.4,1">
+             d:DesignHeight="450" Width="913.85">
+    <Grid Name ="ProductGrid" Margin="0,-1,117.667,1">
         <!-- Specify a number of columns to place elements in-->
         <!-- add more or delete these as needed -->
         <!-- auto = fits to size of element we place-->
@@ -15,7 +15,7 @@
             <ColumnDefinition Width="auto" MinWidth="473.333" />
             <ColumnDefinition Width="auto" MinWidth="71.333" />
             <ColumnDefinition />
-            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="0" />
         </Grid.ColumnDefinitions>
 
         <!-- Specify a number of rows to place elements in -->
@@ -25,14 +25,14 @@
             <RowDefinition Height="auto" MinHeight="356"/>
             <RowDefinition Height="14.667"/>
         </Grid.RowDefinitions>
-        <DataGrid Name="myDataGrid" Grid.Column="1" HorizontalAlignment="Left" Height="364" Margin="2,0.2,0,0" VerticalAlignment="Top" Width="468" RenderTransformOrigin="-3.74,-1.593" Grid.RowSpan="2" Grid.Row="1" ColumnWidth="*"/>
-        <TextBox x:Name="additemname" Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="18.4,47.2,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="115" Grid.ColumnSpan="2">
+        <DataGrid Name="myDataGrid" Grid.Column="1" HorizontalAlignment="Left" Height="364" Margin="2,0.667,0,0" VerticalAlignment="Top" Width="468" RenderTransformOrigin="-3.74,-1.593" Grid.RowSpan="2" Grid.Row="1" ColumnWidth="*"/>
+        <TextBox x:Name="addbrandname" Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="26.667,92.667,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="115" Grid.ColumnSpan="2">
             <TextBox.Style>
                 <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
                     <Style.Resources>
                         <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
                             <VisualBrush.Visual>
-                                <Label Content="Item name" Foreground="Gray" />
+                                <Label Content="Product ID" Foreground="Gray" />
                             </VisualBrush.Visual>
                         </VisualBrush>
                     </Style.Resources>
@@ -50,8 +50,35 @@
                 </Style>
             </TextBox.Style>
         </TextBox>
-        <TextBlock x:Name="additemtag" Grid.Column="2" HorizontalAlignment="Left" Margin="18.4,5.2,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Add Item" VerticalAlignment="Top" Height="44" Width="108" FontSize="24" Grid.ColumnSpan="2"/>
-        <TextBox x:Name="additemquantity" Grid.Column="3" HorizontalAlignment="Left" Height="23" Margin="67,47,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120">
+        <TextBlock x:Name="additemtag" Grid.Column="2" HorizontalAlignment="Left" Margin="26.667,48.667,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Add Item" VerticalAlignment="Top" Height="44" Width="108" FontSize="24" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="additemname" Grid.Column="3" HorizontalAlignment="Left" Height="23" Margin="75.333,92.667,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120">
+            <TextBox.Style>
+                <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                    <Style.Resources>
+                        <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                            <VisualBrush.Visual>
+                                <Label Content="Product Name" Foreground="Gray" />
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Style.Resources>
+                    <Style.Triggers>
+                        <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                            <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                        </Trigger>
+                        <Trigger Property="Text" Value="{x:Null}">
+                            <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter Property="Background" Value="White" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+        <Button x:Name="additembutton" Grid.ColumnSpan="2" Content="Add" Click="Add_Clicked" Grid.Column="2" HorizontalAlignment="Left" Margin="26.667,148.667,0,0" Grid.Row="1" VerticalAlignment="Top" Width="53" RenderTransformOrigin="0.547,-1.8" Height="20"/>
+        <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="26.667,189.667,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Edit Item" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="42" Width="111" FontSize="24"/>
+        <ComboBox x:Name="edititemname" Grid.ColumnSpan="2" Grid.Column="2" HorizontalAlignment="Left" Margin="22.667,231.667,0,0" Grid.Row="1" VerticalAlignment="Top" Width="115" SelectedIndex="0" Height="22"/>
+        <TextBox x:Name="edititemquantity" Grid.Column="3" HorizontalAlignment="Left" Height="22" Margin="71.333,231.667,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120">
             <TextBox.Style>
                 <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
                     <Style.Resources>
@@ -75,12 +102,11 @@
                 </Style>
             </TextBox.Style>
         </TextBox>
-        <Button x:Name="additembutton" Grid.ColumnSpan="2" Content="Add" Click="Add_Clicked" Grid.Column="2" HorizontalAlignment="Left" Margin="18.4,78.2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="53"/>
-        <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="18.4,115.2,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Edit Item" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="42" Width="111" FontSize="24"/>
-        <ComboBox x:Name="edititemname" Grid.ColumnSpan="2" Grid.Column="2" HorizontalAlignment="Left" Margin="18,157,0,0" Grid.Row="1" VerticalAlignment="Top" Width="115" SelectedIndex="0"/>
-        <TextBox x:Name="edititemquantity" Grid.Column="3" HorizontalAlignment="Left" Height="22" Margin="67,157,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120">
+        <Button x:Name="edititemchange" Grid.ColumnSpan="2" Click="Change_Clicked" Content="Change" Grid.Column="2" HorizontalAlignment="Left" Margin="22.667,258.667,0,0" Grid.Row="1" VerticalAlignment="Top" Width="66" Height="20"/>
+        <Button x:Name="refresh" Click="Refresh_Click" Content="Refresh" Grid.Column="3" HorizontalAlignment="Left" Margin="121.333,9.667,0,0" Grid.Row="1" VerticalAlignment="Top" Width="66" Height="20"/>
+        <TextBox x:Name="additemquantity" Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="26.667,120.667,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="115" Grid.ColumnSpan="2">
             <TextBox.Style>
-                <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                <Style xmlns:sys="clr-namespace:System;assembly=mscorlib" TargetType="{x:Type TextBox}">
                     <Style.Resources>
                         <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
                             <VisualBrush.Visual>
@@ -102,7 +128,5 @@
                 </Style>
             </TextBox.Style>
         </TextBox>
-        <Button x:Name="edititemchange" Grid.ColumnSpan="2" Click="Change_Clicked" Content="Change" Grid.Column="2" HorizontalAlignment="Left" Margin="18,186,0,0" Grid.Row="1" VerticalAlignment="Top" Width="66"/>
-        <Button x:Name="refresh" Click="Refresh_Click" Content="Refresh" Grid.Column="2" HorizontalAlignment="Left" Margin="18.4,261.2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="66" Grid.ColumnSpan="2"/>
     </Grid>
 </UserControl>
