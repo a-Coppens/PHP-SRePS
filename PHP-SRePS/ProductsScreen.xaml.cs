@@ -55,12 +55,13 @@ namespace PHP_SRePS
 
                     if (checkItemInDB == false)
                     {
-                        string query = "INSERT INTO dbo.Products (productName, currentQuantity) VALUES (@name, @quantity)";
+                        string query = "INSERT INTO dbo.Products (brandID, productName, currentQuantity) VALUES (@brandid, @name, @quantity)";
 
                         using (SqlCommand command = new SqlCommand(query, connection))
                         {
                             command.Parameters.AddWithValue("@name", additemname.Text);
                             command.Parameters.AddWithValue("@quantity", additemquantity.Text);
+                            command.Parameters.AddWithValue("@brandid", addbrandname.Text);
                             connection.Open();
                             int result = command.ExecuteNonQuery();
                             LoadProductsToDataGrid();
