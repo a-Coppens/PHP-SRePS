@@ -43,7 +43,7 @@ namespace PHP_SRePS
                         {
                             while (reader.Read())
                             {
-                                if (reader["productName"].ToString().ToLower() == additemname.Text.ToLower())
+                                if (reader["productName"].ToString().ToLower() == addProductName.Text.ToLower())
                                 {
                                     checkItemInDB = true;
                                     currentItemQuantity = currentItemQuantity = int.Parse(reader["currentQuantity"].ToString());
@@ -55,28 +55,29 @@ namespace PHP_SRePS
 
                     if (checkItemInDB == false)
                     {
-                        string query = "INSERT INTO dbo.Products (productName, currentQuantity) VALUES (@name, @quantity)";
+                        string query = "INSERT INTO dbo.Products (productName, currentQuantity, brandID) VALUES (@name, @quantity, @brandID)";
 
                         using (SqlCommand command = new SqlCommand(query, connection))
                         {
-                            command.Parameters.AddWithValue("@name", additemname.Text);
-                            command.Parameters.AddWithValue("@quantity", additemquantity.Text);
+                            command.Parameters.AddWithValue("@brandID", addProductID.Text);
+                            command.Parameters.AddWithValue("@name", addProductName.Text);
+                            command.Parameters.AddWithValue("@quantity", addProductQuantity.Text);
                             connection.Open();
                             int result = command.ExecuteNonQuery();
                             LoadProductsToDataGrid();
-                            edititemname.Items.Add(additemname.Text);
+                            edititemname.Items.Add(addProductName.Text);
                             // Check error
                             if (result < 0) Console.WriteLine("Error inserting data into database!");
                         }
                     }
                     else
                     {
-                        string query = "UPDATE dbo.Products SET currentQuantity = @curQuan  WHERE productName = @name; ";
+                        string query = "UPDATE dbo.Products SET currentQuantity = @curQuan  WHERE brandID = @id; ";
 
                         using (SqlCommand command = new SqlCommand(query, connection))
                         {
-                            command.Parameters.AddWithValue("@name", additemname.Text);
-                            command.Parameters.AddWithValue("@curQuan", int.Parse(additemquantity.Text) + currentItemQuantity);
+                            command.Parameters.AddWithValue("@id", editProductQuantity.Text);
+                            command.Parameters.AddWithValue("@curQuan", int.Parse(addProductQuantity.Text) + currentItemQuantity);
                             connection.Open();
                             int result = command.ExecuteNonQuery();
                             LoadProductsToDataGrid();
@@ -97,7 +98,7 @@ namespace PHP_SRePS
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@name", edititemname.Text);
-                    command.Parameters.AddWithValue("@curQuan", edititemquantity.Text);
+                    command.Parameters.AddWithValue("@curQuan", editProductQuantity.Text);
 
                     connection.Open();
                     int result = command.ExecuteNonQuery();

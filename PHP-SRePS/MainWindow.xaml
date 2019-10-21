@@ -24,10 +24,10 @@
     <Grid Name="MainGrid">
         <TabControl SelectionChanged="TabControl_SelectionChanged">
             <TabItem Header="Sales Records" Name="salesRecordTab" >
-                <local:SalesScreen/>
+                <local:SalesScreen Loaded="SalesScreen_Loaded"/>
             </TabItem>
             <TabItem Header="Products" Name="productTab">
-                <local:ProductsScreen/>
+                <local:ProductsScreen Loaded="ProductsScreen_Loaded"/>
             </TabItem>
             <TabItem Header="Report" Name="ReportTab">
                 <TextBlock Text="TODO" />
