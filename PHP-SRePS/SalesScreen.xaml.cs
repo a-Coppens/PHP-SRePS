@@ -85,7 +85,7 @@ namespace PHP_SRePS
                     }
                     connection.Close();
 
-                    string query = "UPDATE dbo.Products SET currentQuantity = @curQuan  WHERE productName = @name; ";
+                    string query = "UPDATE dbo.Products SET currentQuantity = @curQuan WHERE productName = @name; ";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@name", itemnamebox.Text);
@@ -98,14 +98,12 @@ namespace PHP_SRePS
                     }
                 }
 
-                    newInvItem = new InventoryItem { Name = itemnamebox.Text, QuantityCurrent = int.Parse(qtextbox.Text) };
+                newInvItem = new InventoryItem { Name = itemnamebox.Text, QuantityCurrent = int.Parse(qtextbox.Text) };
                 qtextbox.Clear();
 
                 _inventoryItems.Add(newInvItem);
                 dataGrid.Items.Add(newInvItem);
             }
-
-
         }
 
         void InitDataGrid(DataGrid dg)
@@ -141,16 +139,6 @@ namespace PHP_SRePS
             }
         }
 
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-
-        }
-        private void comboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void SaveChanges_Clicked(object sender, RoutedEventArgs e)
         {
             for (int j = 0; j < dataGrid.Items.Count; j++)
@@ -184,8 +172,16 @@ namespace PHP_SRePS
 
                         using (SqlCommand command = new SqlCommand(query, connection))
                         {
+                            DateTime t;
+                            if (saleDatePicker.SelectedDate.HasValue)
+                            {
+                                t = saleDatePicker.SelectedDate.Value;
+                            } else
+                            {
+                                t = DateTime.Today;
+                            }
                             command.Parameters.AddWithValue("@pid", currentProductID);
-                            command.Parameters.AddWithValue("@date", DateTime.Today);
+                            command.Parameters.AddWithValue("@date", t);
                             command.Parameters.AddWithValue("@quantity", _inventoryItems[j].QuantityCurrent);
                             command.Parameters.AddWithValue("@loginid", loginscreen.GetLoginName());
 
