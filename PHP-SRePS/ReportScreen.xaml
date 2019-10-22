@@ -12,8 +12,8 @@
         <!-- auto = fits to size of element we place-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
-            <ColumnDefinition Width="auto" MinWidth="146"  />
-            <ColumnDefinition Width="auto" MinWidth="214"   />
+            <ColumnDefinition Width="auto" MinWidth="151"  />
+            <ColumnDefinition Width="auto" MinWidth="209"   />
             <ColumnDefinition Width="auto" MinWidth="280"  />
             <ColumnDefinition Width="auto" MinWidth="81"  />
             <ColumnDefinition/>
@@ -25,17 +25,26 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="auto" MinHeight="27"/>
-            <RowDefinition Height="auto" MinHeight="153"/>
-            <RowDefinition Height="auto" MinHeight="152"/>
-            <RowDefinition Height="auto" MinHeight="47"/>
+            <RowDefinition Height="auto" MinHeight="8"/>
+            <RowDefinition Height="auto" MinHeight="331"/>
+            <RowDefinition Height="auto" MinHeight="13"/>
             <RowDefinition/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        <ComboBox Grid.Column="1" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" SelectedIndex="0" Height="27" Width="146">
+        <ComboBox Grid.Column="1" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" SelectedIndex="0" Height="27" Width="151">
             <ComboBoxItem Content="Past week sales"/>
             <ComboBoxItem Content="Past month sales"/>
         </ComboBox>
-
-
+        <DataGrid Grid.Column="1" HorizontalAlignment="Left" Height="334" Grid.Row="3" VerticalAlignment="Top" Width="185" Grid.RowSpan="2" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" />
+                <DataGridTextColumn Header="Total Sales" Binding="{Binding TotalSales}" />
+            </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <TextBlock Text="default text" Margin="10" />
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+        </DataGrid>
     </Grid>
 </UserControl>
