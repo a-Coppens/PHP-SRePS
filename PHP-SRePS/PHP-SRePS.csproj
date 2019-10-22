@@ -73,6 +73,9 @@
     <Compile Include="ProductsScreen.xaml.cs">
       <DependentUpon>ProductsScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ReportScreen.xaml.cs">
+      <DependentUpon>ReportScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SalesScreen.xaml.cs">
       <DependentUpon>SalesScreen.xaml</DependentUpon>
     </Compile>
@@ -109,6 +112,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="ProductsScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ReportScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

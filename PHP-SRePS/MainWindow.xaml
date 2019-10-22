@@ -29,8 +29,8 @@
             <TabItem Header="Products" Name="productTab">
                 <local:ProductsScreen />
             </TabItem>
-            <TabItem Header="Report" Name="ReportTab">
-                <TextBlock Text="TODO" />
+            <TabItem Header="Report" Name="reportTab">
+                <local:ReportScreen />
             </TabItem>
         </TabControl>
     </Grid>
