@@ -126,7 +126,7 @@ namespace PHP_SRePS
             var query =
             from product in data.Products
             orderby product.productID
-            select new { product.productID, product.productName, product.currentQuantity };
+            select new { product.productID, product.productName, product.currentQuantity, product.brandID, product.Sales};
 
             // Stores our Query in our grid as a list
             myDataGrid.ItemsSource = query.ToList();
