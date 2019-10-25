@@ -16,46 +16,28 @@ namespace PHP_SRePS
     {
         private readonly List<InventoryItem> _inventoryItems = new List<InventoryItem>();
 
-        private srepsDatabase data = new srepsDatabase();
-
         public SalesScreen()
         {
             InitializeComponent();
             InitDataGrid(dataGrid);
 
-            try
+            SqlAccessor.Open();
+
+            // Load from database -> combo box
+            using (SqlDataReader reader = SqlAccessor.RunQuery("SELECT * FROM dbo.Products;"))
             {
-                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-                builder.DataSource = "php-sreps.database.windows.net";
-                builder.UserID = "swinAdmin";
-                builder.Password = "__admin12";
-                builder.InitialCatalog = "php-sreps";
-
-                using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
+                if (reader != null)
                 {
-
-                    connection.Open();
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append("SELECT * FROM dbo.Products;");
-                    string sql = sb.ToString();
                     int i = 0;
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    while (reader.Read())
                     {
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                itemnamebox.Items.Add(reader["productName"].ToString());
-                                i++;
-                            }
-                        }
+                        itemnamebox.Items.Add(reader["productName"].ToString());
+                        i++;
                     }
                 }
             }
-            catch (SqlException e)
-            {
-                Console.WriteLine(e.ToString());
-            }
+
+            SqlAccessor.Close();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -63,49 +45,44 @@ namespace PHP_SRePS
             InventoryItem newInvItem;
             if ((sender as Button) == salesadditem)
             {
-                using (SqlConnection connection = new SqlConnection(@"Data Source = 'php-sreps.database.windows.net'; User ID = 'swinAdmin'; Password = '__admin12'; Initial Catalog = 'php-sreps';"))
+                int currentItemQuantity = 0;
+                SqlAccessor.Open();
+
+                // Get the current quantity of a product
+                using (SqlDataReader reader = SqlAccessor.RunQuery("SELECT * FROM dbo.Products;"))
                 {
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append("SELECT * FROM dbo.Products;");
-                    string sql = sb.ToString();
-                    int currentItemQuantity = 0;
-                    connection.Open();
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    if (reader != null)
                     {
-                        using (SqlDataReader reader = command.ExecuteReader())
+                        while (reader.Read())
                         {
-                            while (reader.Read())
+                            if ((reader["productName"].ToString().ToLower() == itemnamebox.Text.ToLower()))
                             {
-                                if ((reader["productName"].ToString().ToLower() == itemnamebox.Text.ToLower()))
-                                {
-                                    currentItemQuantity = int.Parse((reader["currentQuantity"].ToString()));
-                                }
+                                currentItemQuantity = int.Parse((reader["currentQuantity"].ToString()));
                             }
                         }
                     }
-                    connection.Close();
-
-                    string query = "UPDATE dbo.Products SET currentQuantity = @curQuan WHERE productName = @name; ";
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@name", itemnamebox.Text);
-                        command.Parameters.AddWithValue("@curQuan", currentItemQuantity - int.Parse(qtextbox.Text));
-
-                        connection.Open();
-                        int result = command.ExecuteNonQuery();
-                        if (result < 0) Console.WriteLine("Error inserting data into database!");
-                        connection.Close();
-                    }
                 }
 
+                // Reduce the current quantity of the product based on value
+                List<SqlParameter> sqlParameters = new List<SqlParameter>()
+                {
+                    new SqlParameter() {ParameterName = "@curQuan", Value = currentItemQuantity - int.Parse(qtextbox.Text)},
+                    new SqlParameter() {ParameterName = "@name", Value = itemnamebox.Text}
+                };
+
+                SqlAccessor.RunQuery("UPDATE dbo.Products SET currentQuantity = @curQuan WHERE productName = @name;", sqlParameters);
+
+                SqlAccessor.Close();
+
+                // UI / Storing
                 newInvItem = new InventoryItem { Name = itemnamebox.Text, QuantityCurrent = int.Parse(qtextbox.Text) };
                 qtextbox.Clear();
-
                 _inventoryItems.Add(newInvItem);
                 dataGrid.Items.Add(newInvItem);
             }
         }
 
+        // TODO: Initialize the datagrid columns (header + bindings) in XAML instead of here
         void InitDataGrid(DataGrid dg)
         {
             DataGridTextColumn textColumnName = new DataGridTextColumn
@@ -124,11 +101,11 @@ namespace PHP_SRePS
             dg.Columns.Add(textColumnQuantity);
         }
 
-        private void qtextboxTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void QtextboxTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             qtextbox = (sender as TextBox);
 
-            if (String.IsNullOrEmpty(qtextbox.Text))
+            if (string.IsNullOrEmpty(qtextbox.Text))
             {
                 salesadditem.IsEnabled = false;
             }
@@ -141,19 +118,44 @@ namespace PHP_SRePS
 
         private void SaveChanges_Clicked(object sender, RoutedEventArgs e)
         {
+            int currentProductID = int.MaxValue;
+            SqlAccessor.Open();
+
+            // Match each datagrid item with product table item, and insert product into sales table
             for (int j = 0; j < dataGrid.Items.Count; j++)
             {
-                using (SqlConnection connection = new SqlConnection(@"Data Source = 'php-sreps.database.windows.net'; User ID = 'swinAdmin'; Password = '__admin12'; Initial Catalog = 'php-sreps';"))
+                // Match product
+                using (SqlDataReader reader = SqlAccessor.RunQuery("SELECT * FROM dbo.Products;"))
                 {
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append("SELECT * FROM dbo.Products;");
-                    string sql = sb.ToString();
-                    int currentProductID = int.MaxValue;
-                    connection.Open();
-
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    if (reader != null)
                     {
-                        using (SqlDataReader reader = command.ExecuteReader())
+                        while (reader.Read())
+                        {
+                            if ((reader["productName"].ToString().ToLower() == _inventoryItems[j].Name.ToLower()))
+                            {
+                                currentProductID = int.Parse((reader["productID"].ToString()));
+                            }
+                        }
+                    }
+                }
+
+                // Add product to sale
+                if (currentProductID != int.MaxValue)
+                {
+                    DateTime t = DateTime.Today;
+                    if (saleDatePicker.SelectedDate.HasValue) t = saleDatePicker.SelectedDate.Value;
+
+                    List<SqlParameter> sqlParameters = new List<SqlParameter>()
+                    {
+                        new SqlParameter() {ParameterName = "@pid", Value = currentProductID},
+                        new SqlParameter() {ParameterName = "@date", Value = t},
+                        new SqlParameter() {ParameterName = "@quantity", Value = _inventoryItems[j].QuantityCurrent},
+                        new SqlParameter() {ParameterName = "@loginid", Value = loginscreen.GetLoginName()}
+                    };
+
+                    using (SqlDataReader reader = SqlAccessor.RunQuery("INSERT INTO dbo.Sales (productID, saleDate, salesQuantity, employee) VALUES (@pid, @date, @quantity, @loginid)", sqlParameters))
+                    {
+                        if (reader != null)
                         {
                             while (reader.Read())
                             {
@@ -164,44 +166,18 @@ namespace PHP_SRePS
                             }
                         }
                     }
-                    connection.Close();
-
-                    if (currentProductID != int.MaxValue)
-                    {
-                        string query = "INSERT INTO dbo.Sales (productID, saleDate, salesQuantity, employee) VALUES (@pid, @date, @quantity, @loginid)";
-
-                        using (SqlCommand command = new SqlCommand(query, connection))
-                        {
-                            DateTime t;
-                            if (saleDatePicker.SelectedDate.HasValue)
-                            {
-                                t = saleDatePicker.SelectedDate.Value;
-                            } else
-                            {
-                                t = DateTime.Today;
-                            }
-                            command.Parameters.AddWithValue("@pid", currentProductID);
-                            command.Parameters.AddWithValue("@date", t);
-                            command.Parameters.AddWithValue("@quantity", _inventoryItems[j].QuantityCurrent);
-                            command.Parameters.AddWithValue("@loginid", loginscreen.GetLoginName());
-
-                            connection.Open();
-                            int result = command.ExecuteNonQuery();
-
-                            if (result < 0) Console.WriteLine("Error inserting data into Database!");
-                        }
-                        connection.Close();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error, currentProductID not found in database");
-                    }
-                   
+                }
+                else
+                {
+                    Console.WriteLine("Error, currentProductID not found in database");
                 }
             }
+
+            SqlAccessor.Close();
+
+            // UI / Storing
             _inventoryItems.Clear();
             dataGrid.Items.Clear();
-            
         }
     }
 }

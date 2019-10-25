@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,6 @@ namespace PHP_SRePS
         public ProductsScreen()
         {
             InitializeComponent();
-            
             LoadProductsToDataGrid();
             LoadProductsToDropdown();
         }
@@ -27,89 +27,95 @@ namespace PHP_SRePS
         {
             if ((sender as Button) == additembutton)
             {
-                using (SqlConnection connection = new SqlConnection(@"Data Source = 'php-sreps.database.windows.net'; User ID = 'swinAdmin'; Password = '__admin12'; Initial Catalog = 'php-sreps';"))
+                bool checkItemInDB = false;
+                int currentItemQuantity = 0;
+                SqlAccessor.Open();
+
+                // Confirm product is in database, and get the current quantity of that item
+                using (SqlDataReader reader = SqlAccessor.RunQuery("SELECT * FROM dbo.Products;"))
                 {
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append("SELECT * FROM dbo.Products;");
-                    string sql = sb.ToString();
-
-                    bool checkItemInDB = false;
-                    int currentItemQuantity = 0;
-                    connection.Open();
-
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    if (reader != null)
                     {
-                        using (SqlDataReader reader = command.ExecuteReader())
+                        while (reader.Read())
+                        {
+                            if (reader["productName"].ToString().ToLower() == addProductName.Text.ToLower())
+                            {
+                                checkItemInDB = true;
+                                currentItemQuantity = int.Parse(reader["currentQuantity"].ToString());
+                            }
+                        }
+                    }
+                }
+
+                if (checkItemInDB == false)
+                {
+                    // Add new product
+                    List<SqlParameter> sqlParameters = new List<SqlParameter>()
+                    {
+                        new SqlParameter() {ParameterName = "@name", Value = addProductName.Text},
+                        new SqlParameter() {ParameterName = "@quantity", Value = addProductQuantity.Text},
+                        new SqlParameter() {ParameterName = "@brandID", Value = addProductID.Text}
+                    };
+
+                    using (SqlDataReader reader = SqlAccessor.RunQuery("INSERT INTO dbo.Products (productName, currentQuantity, brandID) VALUES (@name, @quantity, @brandID)", sqlParameters))
+                    {
+                        if (reader != null)
                         {
                             while (reader.Read())
                             {
                                 if (reader["productName"].ToString().ToLower() == addProductName.Text.ToLower())
                                 {
-                                    checkItemInDB = true;
-                                    currentItemQuantity = currentItemQuantity = int.Parse(reader["currentQuantity"].ToString());
+                                    LoadProductsToDataGrid();
+                                    edititemname.Items.Add(addProductName.Text);
                                 }
                             }
                         }
                     }
-                    connection.Close();
-
-                    if (checkItemInDB == false)
+                } 
+                else
+                {
+                    // Update existing product
+                    List<SqlParameter> sqlParameters = new List<SqlParameter>()
                     {
-                        string query = "INSERT INTO dbo.Products (productName, currentQuantity, brandID) VALUES (@name, @quantity, @brandID)";
+                        new SqlParameter() {ParameterName = "@id", Value = editProductQuantity.Text},
+                        new SqlParameter() {ParameterName = "@curQuan", Value = currentItemQuantity + int.Parse(addProductQuantity.Text)}
+                    };
 
-                        using (SqlCommand command = new SqlCommand(query, connection))
-                        {
-                            command.Parameters.AddWithValue("@brandID", addProductID.Text);
-                            command.Parameters.AddWithValue("@name", addProductName.Text);
-                            command.Parameters.AddWithValue("@quantity", addProductQuantity.Text);
-                            connection.Open();
-                            int result = command.ExecuteNonQuery();
-                            LoadProductsToDataGrid();
-                            edititemname.Items.Add(addProductName.Text);
-                            // Check error
-                            if (result < 0) Console.WriteLine("Error inserting data into database!");
-                        }
-                    }
-                    else
+                    using (SqlDataReader reader = SqlAccessor.RunQuery("UPDATE dbo.Products SET currentQuantity = @curQuan WHERE brandID = @id;", sqlParameters))
                     {
-                        string query = "UPDATE dbo.Products SET currentQuantity = @curQuan  WHERE brandID = @id; ";
-
-                        using (SqlCommand command = new SqlCommand(query, connection))
-                        {
-                            command.Parameters.AddWithValue("@id", editProductQuantity.Text);
-                            command.Parameters.AddWithValue("@curQuan", int.Parse(addProductQuantity.Text) + currentItemQuantity);
-                            connection.Open();
-                            int result = command.ExecuteNonQuery();
-                            LoadProductsToDataGrid();
-                            if (result < 0) Console.WriteLine("Error inserting data into database!");
-                        }
+                        LoadProductsToDataGrid();
                     }
-                    connection.Close();
                 }
 
+                SqlAccessor.Close();
             }
         }
 
         private void Change_Clicked(object sender, RoutedEventArgs e)
         {
-            using (SqlConnection connection = new SqlConnection(@"Data Source = 'php-sreps.database.windows.net'; User ID = 'swinAdmin'; Password = '__admin12'; Initial Catalog = 'php-sreps';"))
+            // Update existing product
+            List<SqlParameter> sqlParameters = new List<SqlParameter>()
             {
-                string query = "UPDATE dbo.Products SET currentQuantity = @curQuan  WHERE productName = @name; ";
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@name", edititemname.Text);
-                    command.Parameters.AddWithValue("@curQuan", editProductQuantity.Text);
+                new SqlParameter() {ParameterName = "@name", Value = edititemname.Text},
+                new SqlParameter() {ParameterName = "@curQuan", Value = editProductQuantity.Text}
+            };
 
-                    connection.Open();
-                    int result = command.ExecuteNonQuery();
-                    LoadProductsToDataGrid();
-                    // Check Error
-                    if (result < 0)
-                        Console.WriteLine("Error inserting data into Database!");
-                    connection.Close();
+
+            SqlAccessor.Open();
+            using (SqlDataReader reader = SqlAccessor.RunQuery("UPDATE dbo.Products SET currentQuantity = @curQuan WHERE productName = @name;", sqlParameters))
+            {
+                if (reader != null)
+                {
+                    while (reader.Read())
+                    {
+                        if (reader["productName"].ToString().ToLower() == addProductName.Text.ToLower())
+                        {
+                            LoadProductsToDataGrid();
+                        }
+                    }
                 }
             }
-
+            SqlAccessor.Close();
         }
 
         public void LoadProductsToDataGrid()
@@ -127,38 +133,20 @@ namespace PHP_SRePS
 
         private void LoadProductsToDropdown()
         {
-            try
+            SqlAccessor.Open();
+            int i = 0;
+            using (SqlDataReader reader = SqlAccessor.RunQuery("SELECT * FROM dbo.Products;"))
             {
-                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-                builder.DataSource = "php-sreps.database.windows.net";
-                builder.UserID = "swinAdmin";
-                builder.Password = "__admin12";
-                builder.InitialCatalog = "php-sreps";
-
-                using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
+                if (reader != null)
                 {
-                    connection.Open();
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append("SELECT * FROM dbo.Products;");
-                    string sql = sb.ToString();
-                    int i = 0;
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    while (reader.Read())
                     {
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                edititemname.Items.Add(reader["productName"].ToString());
-                                i++;
-                            }
-                        }
+                        edititemname.Items.Add(reader["productName"].ToString());
+                        i++;
                     }
                 }
             }
-            catch (SqlException e)
-            {
-                Console.WriteLine(e.ToString());
-            }
+            SqlAccessor.Close();
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
