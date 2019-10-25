@@ -68,7 +68,7 @@
       <DependentUpon>loginscreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Product.cs">
-      <DependentUpon>srepsDatabase.tt</DependentUpon>
+      <DependentUpon>srepsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ProductsScreen.xaml.cs">
       <DependentUpon>ProductsScreen.xaml</DependentUpon>
@@ -76,24 +76,27 @@
     <Compile Include="ReportScreen.xaml.cs">
       <DependentUpon>ReportScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Sale.cs">
+      <DependentUpon>srepsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="SalesScreen.xaml.cs">
       <DependentUpon>SalesScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="SqlAccessor.cs" />
-    <Compile Include="srepsDatabase.Context.cs">
+    <Compile Include="srepsModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>srepsDatabase.Context.tt</DependentUpon>
+      <DependentUpon>srepsModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="srepsDatabase.cs">
+    <Compile Include="srepsModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>srepsDatabase.tt</DependentUpon>
+      <DependentUpon>srepsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="srepsDatabase.Designer.cs">
+    <Compile Include="srepsModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>srepsDatabase.edmx</DependentUpon>
+      <DependentUpon>srepsModel.edmx</DependentUpon>
     </Compile>
     <Page Include="loginscreen.xaml">
       <SubType>Designer</SubType>
@@ -148,12 +151,12 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <EntityDeploy Include="srepsDatabase.edmx">
+    <EntityDeploy Include="srepsModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>srepsDatabase.Designer.cs</LastGenOutput>
+      <LastGenOutput>srepsModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="srepsDatabase.edmx.diagram">
-      <DependentUpon>srepsDatabase.edmx</DependentUpon>
+    <None Include="srepsModel.edmx.diagram">
+      <DependentUpon>srepsModel.edmx</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -166,15 +169,15 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="srepsDatabase.Context.tt">
+    <Content Include="srepsModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>srepsDatabase.edmx</DependentUpon>
-      <LastGenOutput>srepsDatabase.Context.cs</LastGenOutput>
+      <DependentUpon>srepsModel.edmx</DependentUpon>
+      <LastGenOutput>srepsModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="srepsDatabase.tt">
+    <Content Include="srepsModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>srepsDatabase.edmx</DependentUpon>
-      <LastGenOutput>srepsDatabase.cs</LastGenOutput>
+      <DependentUpon>srepsModel.edmx</DependentUpon>
+      <LastGenOutput>srepsModel.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

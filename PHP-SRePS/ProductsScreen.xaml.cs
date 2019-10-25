@@ -15,7 +15,7 @@ namespace PHP_SRePS
     {
         // Instance of our database (product table)
         private readonly srepsDatabase data = new srepsDatabase();
-
+        
         public ProductsScreen()
         {
             InitializeComponent();
@@ -118,6 +118,7 @@ namespace PHP_SRePS
             SqlAccessor.Close();
         }
 
+        // TODO: Update to reflect our current table
         public void LoadProductsToDataGrid()
         {
             // Defines a query to get all products in 

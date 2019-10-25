@@ -4,8 +4,10 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="0659308f07694f10966186b1ba8b1bd8" Name="Diagram1">
-        <EntityTypeShape EntityType="srepsDatabaseNamespace.Product" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+      <Diagram DiagramId="e41db2945d9642999409644fd10ea30c" Name="Diagram1">
+        <EntityTypeShape EntityType="srepsDB.Product" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="srepsDB.Sale" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <AssociationConnector Association="srepsDB.FK__Sales__productID__6477ECF3" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

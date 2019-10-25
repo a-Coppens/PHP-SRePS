@@ -14,8 +14,18 @@ namespace PHP_SRePS
     
     public partial class Product
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Product()
+        {
+            this.Sales = new HashSet<Sale>();
+        }
+    
         public int productID { get; set; }
         public string productName { get; set; }
         public Nullable<int> currentQuantity { get; set; }
+        public string brandID { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Sale> Sales { get; set; }
     }
 }

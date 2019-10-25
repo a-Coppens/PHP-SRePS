@@ -50,10 +50,11 @@ namespace PHP_SRePS
             {
                 if (reader != null)
                 {
-                    while (reader.Read())
+                  /*  while (reader.Read())
                     {
                         // TODO: Needs to set datagrid
                     }
+                    */
                 }
             }
             SqlAccessor.Close();
