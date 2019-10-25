@@ -26,8 +26,8 @@
             <RowDefinition Height="20"/>
             <RowDefinition Height="auto" MinHeight="27"/>
             <RowDefinition Height="auto" MinHeight="8"/>
-            <RowDefinition Height="auto" MinHeight="331"/>
-            <RowDefinition Height="auto" MinHeight="13"/>
+            <RowDefinition Height="auto" MinHeight="310"/>
+            <RowDefinition Height="auto" MinHeight="34"/>
             <RowDefinition/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
@@ -35,7 +35,7 @@
             <ComboBoxItem Content="Past week sales"/>
             <ComboBoxItem Content="Past month sales"/>
         </ComboBox>
-        <DataGrid Grid.Column="1" HorizontalAlignment="Left" Height="334" Grid.Row="3" VerticalAlignment="Top" Width="185" Grid.RowSpan="2" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+        <DataGrid Grid.Column="1" HorizontalAlignment="Left" Height="310" Grid.Row="3" VerticalAlignment="Top" Width="185" AutoGenerateColumns="False" Grid.ColumnSpan="2">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" />
                 <DataGridTextColumn Header="Total Sales" Binding="{Binding TotalSales}" />
