@@ -79,6 +79,7 @@
     <Compile Include="SalesScreen.xaml.cs">
       <DependentUpon>SalesScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SqlAccessor.cs" />
     <Compile Include="srepsDatabase.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

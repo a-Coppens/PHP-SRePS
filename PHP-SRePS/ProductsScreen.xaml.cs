@@ -129,11 +129,13 @@ namespace PHP_SRePS
         {
             try
             {
-                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-                builder.DataSource = "php-sreps.database.windows.net";
-                builder.UserID = "swinAdmin";
-                builder.Password = "__admin12";
-                builder.InitialCatalog = "php-sreps";
+                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder
+                {
+                    DataSource = "php-sreps.database.windows.net",
+                    UserID = "swinAdmin",
+                    Password = "__admin12",
+                    InitialCatalog = "php-sreps"
+                };
 
                 using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
                 {
