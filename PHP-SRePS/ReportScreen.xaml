@@ -31,11 +31,12 @@
             <RowDefinition/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        <ComboBox Grid.Column="1" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" SelectedIndex="0" Height="27" Width="151">
+        <ComboBox x:Name="pastSalesRange" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" SelectedIndex="0" Height="27" Width="151">
+            <ComboBoxItem Content="Past day sales"/>
             <ComboBoxItem Content="Past week sales"/>
             <ComboBoxItem Content="Past month sales"/>
         </ComboBox>
-        <DataGrid Grid.Column="1" HorizontalAlignment="Left" Height="310" Grid.Row="3" VerticalAlignment="Top" Width="185" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+        <DataGrid x:Name="reportDatagrid" Grid.Column="1" HorizontalAlignment="Left" Height="310" Grid.Row="3" VerticalAlignment="Top" Width="185" AutoGenerateColumns="False" Grid.ColumnSpan="2">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" />
                 <DataGridTextColumn Header="Total Sales" Binding="{Binding TotalSales}" />
