@@ -86,13 +86,6 @@ namespace PHP_SRePS
 
         }
 
-        public void Tester()
-        {
-            DateTime month = new DateTime();
-
-            month = data.Sales.Select(d => d.saleDate).SingleOrDefault();
-        }
-
         private void storeItemsInComboBox()
         {
             //TODO: Weird results
@@ -124,7 +117,7 @@ namespace PHP_SRePS
         {
             IQueryable query = null;
             int x = int.Parse(itemName.SelectedItem.ToString());
-
+            int total = 0;
             //Monthly
             if (requestedPeriod.Text == "Monthly Forecast")
             {
@@ -138,26 +131,48 @@ namespace PHP_SRePS
                     itemID = sales.Key,
                     sales = sales.Sum(a => a.salesQuantity)
                 };
+
+                // Output Monthly
+                foreach (var row in query)
+                {
+                    forecastDescriptor.Text = "Monthly Sales Forecast for:" + row.ToString();
+                }
             }
 
             //Weekly
             else if (requestedPeriod.Text == "Weekly Forecast")
             {
+                SqlAccessor.Open();
+                int i = 0;
+
+                using (SqlDataReader reader = SqlAccessor.RunQuery("SELECT productID, DATEADD(week, DATEDIFF(week, 0, saleDate), 0) AS WeekStart, SUM(salesQuantity) as WeeklySales FROM Sales WHERE productID =" + x + "GROUP BY DATEADD(week, DATEDIFF(week, 0, saleDate), 0), productID;"))
+
+                {
+                    if (reader != null)
+                    {
+                        while (reader.Read())
+                        {
+
+                            //pass the reader variables to a string
+                            string readerToString = "ID: " + reader["productID"].ToString() + " DateTime: " + Convert.ToString(reader["WeekStart"]) + " Sales: " + reader["WeeklySales"].ToString();
+                            //calculate total
+                            total = reader.GetInt32(2) + total;
+                            // forecastDescriptor.Text = read;
+                            i++;
+
+                        }
+                    }
+                }
+                // i being the number of entries in reader
+                int average = total / i;
+
+                SqlAccessor.Close();
+
+                // Output Weekly
+                forecastDescriptor.Text = "Weekly Sales Prediction for product " + x + " is " + average;
 
             }
 
-            //Output
-            foreach (var row in query)
-            {
-                forecastDescriptor.Text = "Monthly Sales Forecast for:" + row.ToString();
-            }
-
-            //foreach (var row in query)
-            //{
-            //    MessageBox.Show(row.ToString());
-            //}
-
-            int productsSold;
 
         }
     }
