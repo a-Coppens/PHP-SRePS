@@ -133,6 +133,12 @@ namespace PHP_SRePS
             int x = int.Parse(itemName.SelectedItem.ToString());
             int total = 0;
             //Monthly
+
+            var query2 =
+                from p in data.Products
+                where p.productID == x
+                select new { p.productName };
+
             if (requestedPeriod.Text == "Monthly Forecast")
             {
 
@@ -142,14 +148,18 @@ namespace PHP_SRePS
                 group s by s.productID into sales
                 select new
                 {
-                    itemID = sales.Key,
+               
                     sales = sales.Sum(a => a.salesQuantity)
                 };
 
                 // Output Monthly
                 foreach (var row in query)
                 {
-                    forecastDescriptor.Text = "Monthly Sales Forecast for:" + row.ToString();
+                    foreach (var row2 in query2)
+                    {
+                        forecastDescriptor.Text = "Monthly Sales Forecast for: " + row2.productName.ToString() + row.ToString().Replace("{","").Replace("}"," ");
+                    }
+                  
                 }
             }
 
@@ -183,7 +193,11 @@ namespace PHP_SRePS
                 SqlAccessor.Close();
 
                 // Output Weekly
-                forecastDescriptor.Text = "Weekly Sales Prediction for product " + x + " is " + average;
+                //forecastDescriptor.Text = "Weekly Sales Prediction for product: "  +  + " is " + average;
+                foreach (var row in query2)
+                {
+                    forecastDescriptor.Text = "Weekly Sales Prediction for product: " + row.productName.ToString() +" is " + average;
+                }
 
             }
 
