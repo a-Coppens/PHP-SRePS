@@ -36,7 +36,7 @@
             <ComboBoxItem Content="Past week sales"/>
             <ComboBoxItem Content="Past month sales"/>
         </ComboBox>
-        <DataGrid x:Name="reportDatagrid" Grid.Column="1" HorizontalAlignment="Left" Height="310" ItemsSource="{Binding Rows}" Grid.Row="3" VerticalAlignment="Top" Width="249" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+        <DataGrid x:Name="reportDatagrid" Grid.Column="1" HorizontalAlignment="Left" Height="310" ItemsSource="{Binding Rows}" Grid.Row="2" VerticalAlignment="Top" Width="350" AutoGenerateColumns="False" Grid.ColumnSpan="2" Margin="0,7.8,0,0" Grid.RowSpan="2">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Product ID" Binding="{Binding ProductID}" />
                 <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" />
@@ -67,7 +67,7 @@
                 </Style>
             </TextBox.Style>
         </TextBox>
-        <Button x:Name="savefiletocsv" Click="SaveChanges_Clicked" Content="Save file into .csv" Grid.Column="3" HorizontalAlignment="Right" Margin="0,275,78,0" Grid.Row="3" VerticalAlignment="Top" Width="157"  Height="25" BorderBrush="#FF4D4D4D" BorderThickness="0" VerticalContentAlignment="Center" Padding="1" Background="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" Grid.ColumnSpan="2">
+        <Button x:Name="savefiletocsv" Click="SaveChanges_Clicked" Content="Export file into .csv" Grid.Column="3" HorizontalAlignment="Right" Margin="0,275,78,0" Grid.Row="3" VerticalAlignment="Top" Width="157"  Height="25" BorderBrush="#FF4D4D4D" BorderThickness="0" VerticalContentAlignment="Center" Padding="1" Background="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" Grid.ColumnSpan="2">
             <Button.Foreground>
                 <SolidColorBrush Color="#FFFDFEFD"/>
             </Button.Foreground>
