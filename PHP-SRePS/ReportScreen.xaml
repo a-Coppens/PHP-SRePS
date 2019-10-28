@@ -36,11 +36,43 @@
             <ComboBoxItem Content="Past week sales"/>
             <ComboBoxItem Content="Past month sales"/>
         </ComboBox>
-        <DataGrid x:Name="reportDatagrid" Grid.Column="1" HorizontalAlignment="Left" Height="310" Grid.Row="3" VerticalAlignment="Top" Width="249" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+        <DataGrid x:Name="reportDatagrid" Grid.Column="1" HorizontalAlignment="Left" Height="310" ItemsSource="{Binding Rows}" Grid.Row="3" VerticalAlignment="Top" Width="249" AutoGenerateColumns="False" Grid.ColumnSpan="2">
             <DataGrid.Columns>
+                <DataGridTextColumn Header="Product ID" Binding="{Binding ProductID}" />
                 <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" />
                 <DataGridTextColumn Header="Total Sales" Binding="{Binding TotalSales}" />
             </DataGrid.Columns>
         </DataGrid>
+        <TextBox x:Name="addFileName" Grid.Column="3" Text="{Binding filename}" HorizontalAlignment="Left" Height="23" Margin="126,246.8,0,0" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Top" Width="154">
+            <TextBox.Style>
+                <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                    <Style.Resources>
+                        <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                            <VisualBrush.Visual>
+                                <Label Content="File Name" Foreground="Gray" />
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Style.Resources>
+                    <Style.Triggers>
+                        <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                            <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                        </Trigger>
+                        <Trigger Property="Text" Value="{x:Null}">
+                            <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter Property="Background" Value="White" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+        <Button x:Name="savefiletocsv" Click="SaveChanges_Clicked" Content="Save file into .csv" Grid.Column="3" HorizontalAlignment="Right" Margin="0,274.8,0,0" Grid.Row="3" VerticalAlignment="Top" Width="154"  Height="26" BorderBrush="#FF4D4D4D" BorderThickness="0" VerticalContentAlignment="Center" Padding="1" Background="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}">
+            <Button.Foreground>
+                <SolidColorBrush Color="#FFFDFEFD"/>
+            </Button.Foreground>
+        </Button>
     </Grid>
+
+
 </UserControl>
