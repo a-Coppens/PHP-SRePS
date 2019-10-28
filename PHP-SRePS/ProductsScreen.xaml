@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:PHP_SRePS"
+             xmlns:cal="clr-namespace:PHP_SRePS"
              mc:Ignorable="d" 
              d:DesignHeight="450" Width="913.85">
     <Grid Name ="ProductGrid" Margin="0,-1,117.667,1">

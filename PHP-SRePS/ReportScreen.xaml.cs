@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,7 @@ namespace PHP_SRePS
         {
             InitializeComponent();
             LoadSalesToDataGrid();
+            storeItemsInComboBox();
         }
 
         public void LoadSalesToDataGrid()
@@ -37,7 +39,7 @@ namespace PHP_SRePS
             {
                 Console.WriteLine("-28");
                 dayRange = -28;
-            } 
+            }
             else
             {
                 Console.WriteLine("-1");
@@ -60,17 +62,17 @@ namespace PHP_SRePS
 
         public void SaveChanges_Clicked(object sender, RoutedEventArgs e)
         {
-            
-                reportDatagrid.SelectAllCells();
-                reportDatagrid.ClipboardCopyMode = DataGridClipboardCopyMode.IncludeHeader;
-                ApplicationCommands.Copy.Execute(null, reportDatagrid);
-                reportDatagrid.UnselectAllCells();
-                String result = (string)Clipboard.GetData(DataFormats.CommaSeparatedValue);
-                String filePath = "D:\\"+addFileName.Text+".csv";
-                File.AppendAllText(filePath, result, UnicodeEncoding.UTF8);
 
-                MessageBox.Show("Data Saved in " + filePath);
-            
+            reportDatagrid.SelectAllCells();
+            reportDatagrid.ClipboardCopyMode = DataGridClipboardCopyMode.IncludeHeader;
+            ApplicationCommands.Copy.Execute(null, reportDatagrid);
+            reportDatagrid.UnselectAllCells();
+            String result = (string)Clipboard.GetData(DataFormats.CommaSeparatedValue);
+            String filePath = "D:\\" + addFileName.Text + ".csv";
+            File.AppendAllText(filePath, result, UnicodeEncoding.UTF8);
+
+            MessageBox.Show("Data Saved in " + filePath);
+
 
         }
 
@@ -83,5 +85,81 @@ namespace PHP_SRePS
         {
 
         }
+
+        public void Tester()
+        {
+            DateTime month = new DateTime();
+
+            month = data.Sales.Select(d => d.saleDate).SingleOrDefault();
+        }
+
+        private void storeItemsInComboBox()
+        {
+            //TODO: Weird results
+            //var itemNameQuery =
+            //from product in data.Products
+            //select new {product.productName};
+
+            //itemName.ItemsSource = itemNameQuery.ToList();
+
+
+            //Copied from Products page as above query was not working as intended
+            SqlAccessor.Open();
+            int i = 0;
+            using (SqlDataReader reader = SqlAccessor.RunQuery("SELECT DISTINCT productID FROM dbo.Sales ORDER BY(productID);"))
+            {
+                if (reader != null)
+                {
+                    while (reader.Read())
+                    {
+                        itemName.Items.Add(reader["productID"]);
+                        i++;
+                    }
+                }
+            }
+            SqlAccessor.Close();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            IQueryable query = null;
+            int x = int.Parse(itemName.SelectedItem.ToString());
+
+            //Monthly
+            if (requestedPeriod.Text == "Monthly Forecast")
+            {
+
+                query =
+                from s in data.Sales
+                where s.productID == x
+                group s by s.productID into sales
+                select new
+                {
+                    itemID = sales.Key,
+                    sales = sales.Sum(a => a.salesQuantity)
+                };
+            }
+
+            //Weekly
+            else if (requestedPeriod.Text == "Weekly Forecast")
+            {
+
+            }
+
+            //Output
+            foreach (var row in query)
+            {
+                forecastDescriptor.Text = "Monthly Sales Forecast for:" + row.ToString();
+            }
+
+            //foreach (var row in query)
+            //{
+            //    MessageBox.Show(row.ToString());
+            //}
+
+            int productsSold;
+
+        }
     }
 }
+

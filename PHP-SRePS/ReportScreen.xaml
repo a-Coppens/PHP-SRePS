@@ -43,7 +43,7 @@
                 <DataGridTextColumn Header="Total Sales" Binding="{Binding TotalSales}" />
             </DataGrid.Columns>
         </DataGrid>
-        <TextBox x:Name="addFileName" Grid.Column="3" Text="{Binding filename}" HorizontalAlignment="Left" Height="23" Margin="126,246.8,0,0" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Top" Width="154">
+        <TextBox x:Name="addFileName" Grid.Column="3" Text="{Binding filename}" HorizontalAlignment="Left" Height="23" Margin="126,247,0,0" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Top" Width="157" Grid.ColumnSpan="2">
             <TextBox.Style>
                 <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
                     <Style.Resources>
@@ -67,11 +67,20 @@
                 </Style>
             </TextBox.Style>
         </TextBox>
-        <Button x:Name="savefiletocsv" Click="SaveChanges_Clicked" Content="Save file into .csv" Grid.Column="3" HorizontalAlignment="Right" Margin="0,274.8,0,0" Grid.Row="3" VerticalAlignment="Top" Width="154"  Height="26" BorderBrush="#FF4D4D4D" BorderThickness="0" VerticalContentAlignment="Center" Padding="1" Background="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}">
+        <Button x:Name="savefiletocsv" Click="SaveChanges_Clicked" Content="Save file into .csv" Grid.Column="3" HorizontalAlignment="Right" Margin="0,275,78,0" Grid.Row="3" VerticalAlignment="Top" Width="157"  Height="25" BorderBrush="#FF4D4D4D" BorderThickness="0" VerticalContentAlignment="Center" Padding="1" Background="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" Grid.ColumnSpan="2">
             <Button.Foreground>
                 <SolidColorBrush Color="#FFFDFEFD"/>
             </Button.Foreground>
         </Button>
+        <ComboBox x:Name="requestedPeriod" Grid.Column="3" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" SelectedIndex="0" Height="27" Width="113" SelectionChanged="pastSalesRange_SelectionChanged" Margin="170,3,0,0" Grid.RowSpan="2" Grid.ColumnSpan="2">
+            <ComboBoxItem Content="Weekly Forecast"/>
+            <ComboBoxItem Content="Monthly Forecast"/>
+        </ComboBox>
+        <ComboBox x:Name="itemName" Grid.Column="3" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" SelectedIndex="0" Height="27" Width="165" SelectionChanged="pastSalesRange_SelectionChanged" Margin="0,3,0,0" Grid.RowSpan="2">
+
+        </ComboBox>
+        <Button Content="Generate Forecast" Grid.Column="3" HorizontalAlignment="Left" Margin="126,0,0,0" Grid.Row="3" VerticalAlignment="Top" Width="157" Click="Button_Click" Grid.ColumnSpan="2" Height="26"  Background="#FF3399FF" Foreground="White" BorderThickness="0"/>
+        <TextBlock x:Name="forecastDescriptor" HorizontalAlignment="Left" Margin="0,45,0,0" Grid.Row="3" TextWrapping="Wrap" Text="Prediction" VerticalAlignment="Top" Height="106" Width="283" Grid.ColumnSpan="2" Grid.Column="3"/>
     </Grid>
 
 
