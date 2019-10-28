@@ -39,7 +39,6 @@
         <DataGrid x:Name="reportDatagrid" Grid.Column="1" HorizontalAlignment="Left" Height="310" ItemsSource="{Binding Rows}" Grid.Row="2" VerticalAlignment="Top" Width="350" AutoGenerateColumns="False" Grid.ColumnSpan="2" Margin="0,7.8,0,0" Grid.RowSpan="2">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Product ID" Binding="{Binding ProductID}" />
-                <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" />
                 <DataGridTextColumn Header="Total Sales" Binding="{Binding TotalSales}" />
             </DataGrid.Columns>
         </DataGrid>

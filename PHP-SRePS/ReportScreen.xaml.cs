@@ -52,7 +52,7 @@ namespace PHP_SRePS
             var query = data.Sales
             .Where(d => d.saleDate <= DateTime.Today && d.saleDate > backDate)
             .GroupBy(a => a.productID)
-            .Select(a => new { TotalSales = a.Sum(b => b.salesQuantity), ProductName = a.Key })
+            .Select(a => new { TotalSales = a.Sum(b => b.salesQuantity), ProductID = a.Key })
             .OrderByDescending(a => a.TotalSales);
 
             if (reportDatagrid != null) reportDatagrid.ItemsSource = query.ToList();
