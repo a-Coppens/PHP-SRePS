@@ -24,10 +24,11 @@ namespace PHP_SRePS
             LoadSalesToDataGrid();
             storeItemsInComboBox();
         }
-
+        
         public void LoadSalesToDataGrid()
         {
 
+            DateTime backDate = DateTime.Today;
             // TODO: There is a UI delay / bug here, the pastSalesRange.Text does not update until it is changed a second time
             int dayRange = -1;
             if (pastSalesRange.Text == "Past week sales")
@@ -45,19 +46,29 @@ namespace PHP_SRePS
                 Console.WriteLine("-1");
             }
 
-            DateTime backDate = DateTime.Today.AddDays(dayRange);
+            backDate = DateTime.Today.AddDays(dayRange);
 
 
             // "SELECT productID, SUM(salesQuantity) FROM Sales WHERE saleDate between '@todayDate' and '@targetPreviousDate' GROUP BY productID;"
             var query = data.Sales
             .Where(d => d.saleDate <= DateTime.Today && d.saleDate > backDate)
             .GroupBy(a => a.productID)
-            .Select(a => new { TotalSales = a.Sum(b => b.salesQuantity), ProductName = a.Key })
+            .Select(a => new { TotalSales = a.Sum(b => b.salesQuantity), ProductID = a.Key })
             .OrderByDescending(a => a.TotalSales);
 
-            if (reportDatagrid != null) reportDatagrid.ItemsSource = query.ToList();
+         
+            if (reportDatagrid != null)
+                reportDatagrid.ItemsSource = query.ToList();
+
+            
+            
 
 
+        }
+
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            LoadSalesToDataGrid();
         }
 
         public void SaveChanges_Clicked(object sender, RoutedEventArgs e)
@@ -78,7 +89,10 @@ namespace PHP_SRePS
 
         private void pastSalesRange_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(reportDatagrid!=null)
+                reportDatagrid.Items.Refresh();
             LoadSalesToDataGrid();
+           
         }
 
         private void CopyDataToCSV_Click(object sender, System.Windows.RoutedEventArgs e)

@@ -81,6 +81,7 @@
         </ComboBox>
         <Button Content="Generate Forecast" Grid.Column="3" HorizontalAlignment="Left" Margin="126,0,0,0" Grid.Row="3" VerticalAlignment="Top" Width="157" Click="Button_Click" Grid.ColumnSpan="2" Height="26"  Background="#FF3399FF" Foreground="White" BorderThickness="0"/>
         <TextBlock x:Name="forecastDescriptor" HorizontalAlignment="Left" Margin="0,45,0,0" Grid.Row="3" TextWrapping="Wrap" Text="Prediction" VerticalAlignment="Top" Height="106" Width="283" Grid.ColumnSpan="2" Grid.Column="3"/>
+        <Button x:Name="refresh" Click="Refresh_Click" Content="Refresh"  Grid.Column="3" HorizontalAlignment="Left" Margin="10,193.8,0,0" Grid.Row="3" VerticalAlignment="Top" Width="75"/>
     </Grid>
 
 
